@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:title="알림 메시지"/>
+    <RingtonePreference
+        android:title="비밀번호 설정"/>
+</PreferenceScreen>

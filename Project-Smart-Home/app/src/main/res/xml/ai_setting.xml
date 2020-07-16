@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:title="SmartManager"
+        android:summary="집의 상태를 자동적으로 쾌적하게 관리하는 기능"/>
+    <RingtonePreference
+        android:title="사용자설정 기능"/>
+</PreferenceScreen>

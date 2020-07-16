@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.Android.com/tools"
+    xmlns:tools1="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools1:showIn="@layout/activity_room">
+
+    <include
+        android:id="@+id/temp_item"
+        layout="@layout/measured_value_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/hum_item"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/dust_item"/>
+
+
+
+    <include
+        android:id="@+id/hum_item"
+        layout="@layout/measured_value_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/temp_item"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/disc_item"/>
+
+    <include
+        android:id="@+id/dust_item"
+        layout="@layout/measured_value_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/disc_item"
+        app:layout_constraintTop_toBottomOf="@+id/temp_item"/>
+
+    <include
+        android:id="@+id/disc_item"
+        layout="@layout/measured_value_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toRightOf="@+id/dust_item"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hum_item"/>
+    <TextView
+        android:text="권장 메시지"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center|center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/dust_item"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
