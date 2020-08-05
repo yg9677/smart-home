@@ -4,22 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/colorSub"
     tools:context=".ui.AI.AIActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:background="@color/transparent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/ai_toolbar"
-            app:title="인공지능"
-            app:titleTextColor="@color/black"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            android:layout_height="@dimen/collapsingtoolbarlayout_height"
+            android:fitsSystemWindows="true"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:expandedTitleTextAppearance="@style/CollapsingToolbar.TitleText"
+            app:expandedTitleGravity="center_vertical|center"
+            app:collapsedTitleTextAppearance="@style/CollapsingToolbar.TitleText"
+            app:toolbarId="@id/ai_toolbar">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/ai_toolbar"
+                app:title="인공지능"
+                app:titleTextColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                android:background="@color/transparent"/>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <include layout="@layout/content_ai"/>
+    
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,33 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/device_item_height"
     android:background="@drawable/deviceshape"
     android:padding="10dp">
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
         <ImageView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/device_name_txt"
+            android:id="@+id/device_img"
             android:src="@drawable/ic_insert_photo_24px"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:scaleType="fitXY"/>
         <TextView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/device_img"
+            android:id="@+id/device_name_txt"
             android:text="장치 이름"
-            android:textSize="25dp"
+            android:textSize="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <ImageButton
-            android:src="@drawable/ic_insert_photo_24px"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:id="@+id/device_onoff_btn"
+            android:src="@drawable/ic_power_settings_new_24px"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:scaleType="fitXY"
-            android:background="#00FFFFFF"/>
-    </LinearLayout>
+            android:background="#00FFFFFF"
+            android:tint="@color/selector_on_off_power"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <TextView
-        android:text="온도 및 기타"
-        android:textSize="40dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:id="@+id/device_value_txt"
+        android:text="온도 및 상태"
+        android:textSize="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
 </LinearLayout>

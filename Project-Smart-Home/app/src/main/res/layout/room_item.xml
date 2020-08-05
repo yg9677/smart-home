@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
     <Button
         android:id="@+id/room_title_btn"
         android:text="방 이름"
         android:textSize="25dp"
+        android:paddingLeft="20dp"
+        android:textColor="@color/white"
         android:gravity="left|center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#00FFFFFF"/>
     <LinearLayout
+        android:id="@+id/empty_device"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:gravity="center|center_vertical"
@@ -21,7 +24,11 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
     <GridView
+        android:id="@+id/device_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numColumns="2"/>
+        android:numColumns="2"
+        android:horizontalSpacing="10dp"
+        android:verticalSpacing="10dp"
+        android:padding="10dp"/>
 </LinearLayout>

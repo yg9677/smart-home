@@ -13,14 +13,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
-
-        <androidx.appcompat.widget.Toolbar
-            app:title="방 이름"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
-    </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="@dimen/collapsingtoolbarlayout_height"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:expandedTitleTextAppearance="@style/CollapsingToolbar.TitleText"
+            app:expandedTitleGravity="center_vertical|center"
+            app:collapsedTitleTextAppearance="@style/CollapsingToolbar.TitleText"
+            android:fitsSystemWindows="true"
+            app:toolbarId="@id/room_name_toolbar">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/room_name_toolbar"
+                app:title="방 이름"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                android:background="@color/transparent"
+                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-    <include layout="@layout/content_room"/>
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <include layout="@layout/content_room"/>
+    </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

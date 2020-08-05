@@ -7,19 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.room.RoomListActivity">
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/room_list_toolbar"
         app:title="방 목록"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#00FFFFFF"/>
-    <ScrollView
-        android:fillViewport="true"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/room_list_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="50">
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </ScrollView>
+        android:layout_weight="9"/>
     <Button
         android:layout_weight="1"
         android:text="저장"

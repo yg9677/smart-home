@@ -1,13 +1,13 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarItemBackground">@color/black</item>
-        <item name="actionbar"
+        <item name="android:background">@color/transparent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -18,5 +18,17 @@
     <style name="AppTheme.AppBarOverlay" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="Base.ThemeOverlay.AppCompat.Light" />
+
+    <style name="CollapsingToolbar.TitleText" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textSize">30dp</item>
+    </style>
+
+    <style name="CollapedText" parent="CollapsingToolbar.TitleText">
+        <item name="android:textSize">20dp</item>
+    </style>
+
+    <style name="ExpandedText" parent="CollapsingToolbar.TitleText">
+        <item name="android:textSize">30dp</item>
+    </style>
 
 </resources>

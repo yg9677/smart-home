@@ -3,9 +3,17 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="colorSub">#E4E4E4</color>
     
     <color name="transparent">#00FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="grey">#505050</color>
+    <color name="sapphire">#7A7AFD</color>
+
+    <color name="poweron">#E91E1E</color>
+    <color name="poweroff">#919191</color>
+    
+    <color name="divider">#EEA3A3A3</color>
 </resources>

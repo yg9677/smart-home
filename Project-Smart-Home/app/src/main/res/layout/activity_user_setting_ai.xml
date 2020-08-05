@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorSub"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.AI.UserSettingAIActivity">
+    <com.google.android.material.appbar.AppBarLayout
+        android:background="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/collapsingtoolbarlayout_height"
+            android:fitsSystemWindows="true"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:expandedTitleTextAppearance="@style/CollapsingToolbar.TitleText"
+            app:expandedTitleGravity="center_vertical|center"
+            app:collapsedTitleTextAppearance="@style/CollapsingToolbar.TitleText"
+            app:toolbarId="@id/user_setting_ai_toolbar">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/user_setting_ai_toolbar"
+                app:title="사용자 설정 인공지능"
+                app:titleTextColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                android:background="@color/transparent"/>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/content_user_setting_ai"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
