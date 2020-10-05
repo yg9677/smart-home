@@ -10,6 +10,7 @@ import android.widget.Button;
 import com.example.project_smart_home.MainActivity;
 import com.example.project_smart_home.R;
 
+// 로그인 액티비티
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     @Override

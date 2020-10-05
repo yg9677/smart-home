@@ -3,9 +3,9 @@
     package="com.example.project_smart_home">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <uses-feature android:name="android.hardware.camera2"/>
+    <uses-feature android:name="android.hardware.camera2" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.member.LaunchActivity"></activity>
+        <activity android:name=".ui.AI.AddConditionActivity"></activity>
+        <activity android:name=".ui.member.LaunchActivity" />
         <activity android:name=".ui.member.FaceRegisterActivity" />
         <activity android:name=".ui.manual.ManualActivity" />
         <activity android:name=".ui.AI.UserSettingAIActivity" />

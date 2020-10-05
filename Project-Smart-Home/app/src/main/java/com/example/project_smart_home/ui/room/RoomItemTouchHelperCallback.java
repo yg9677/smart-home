@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+// 방 순서를 바꿀 수 있게하는 드래그 기능
 public class RoomItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     public interface OnItemMoveListener{

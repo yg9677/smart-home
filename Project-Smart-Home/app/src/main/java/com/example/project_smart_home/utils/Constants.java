@@ -3,6 +3,7 @@ package com.example.project_smart_home.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+// 상수, 문자열
 public class Constants {
 
     // 액티비티 간 전송 메시지
@@ -24,4 +25,8 @@ public class Constants {
 
     // 기능별 구분 텍스트
     public static final String FUNCTION_KEY_TEMP = "temp";
+
+    // 사용자 인공지능 조건 선택 값
+    public static final int AI_CONDITION_KEY_DATE = 1;
+    public static final int AI_CONDITION_KEY_DATA = 2;
 }

@@ -2,18 +2,29 @@ package com.example.project_smart_home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.example.project_smart_home.Task.ACLCurrentTask;
+import com.example.project_smart_home.Task.DeviceTask;
+import com.example.project_smart_home.Task.MoodLightTask;
+import com.example.project_smart_home.Task.WindowTask;
 import com.example.project_smart_home.adapter.OnClickItem;
 import com.example.project_smart_home.adapter.RoomRecyclerAdapter;
 import com.example.project_smart_home.object.Device;
 import com.example.project_smart_home.object.Room;
+import com.example.project_smart_home.refine.DeviceRifine;
+import com.example.project_smart_home.refine.RoomRifine;
 import com.example.project_smart_home.ui.AI.AIActivity;
 import com.example.project_smart_home.ui.manual.ManualActivity;
 import com.example.project_smart_home.ui.member.MemberActivity;
 import com.example.project_smart_home.ui.message.MessageActivity;
 import com.example.project_smart_home.ui.room.RoomListActivity;
+import com.example.project_smart_home.ui.Enrollment.KeyActivity;
 
+import com.example.project_smart_home.Task.RoomTask;
+
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -35,14 +46,17 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import static com.example.project_smart_home.utils.Constants.FUNCTION_KEY_TEMP;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         NavigationView.OnNavigationItemSelectedListener, OnClickItem {
-    private Button nav_room_btn, nav_member_btn, nav_ai_btn;
+    private Button nav_room_btn, nav_member_btn, nav_ai_btn, nav_key_btn;
     private ImageButton option_btn;
+
+    SharedPreferences mSharedPreferences;                       // 앱 설정 값들, 액티비티간 공유 정보
 
     NavigationView mNavigationView;
     DrawerLayout mDrawer;
@@ -51,13 +65,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RoomRecyclerAdapter rListAdapter;
 
 
-    //샘플 데이터
-    ArrayList<Room> sample = new ArrayList<Room>();
+    public final static String myIp="192.168.219.106";
+    ArrayList<Room> room = new ArrayList<Room>();
+    ArrayList<Device> deviceArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -75,7 +93,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mNavigationView.setNavigationItemSelectedListener(this);
 
         btnSetting();
-        roomSetting();
+        try {
+            roomSetting();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -91,20 +115,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View view) { // 사이드 바
         Intent next = null;
         switch (view.getId()){
-            case R.id.nav_room_btn:
-                next = RoomListActivity.getStartIntent(this, sample);
+            case R.id.nav_room_btn: //방의 대한 센서 데이터들
+                next = RoomListActivity.getStartIntent(this, room);
                 break;
             case R.id.nav_member_btn:
                 next = MemberActivity.getStartIntent(this);
                 break;
             case R.id.nav_ai_btn:
-                next = AIActivity.getStartIntent(this);
+                next = AIActivity.getStartIntent(this, room);
                 break;
             case R.id.option_btn:
                 next = SettingsActivity.getStartIntent(this);
+                break;
+            case R.id.nav_key_btn:
+                next = KeyActivity.getStartIntent(this);
                 break;
         }
         if (next != null) startNextActivity(next);
@@ -124,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 next = new Intent(this, ManualActivity.class);
                 startNextActivity(next);
                 break;
-                //url로 웹 공지사항으로 연결
+            //url로 웹 공지사항으로 연결
             case R.id.nav_notification:
                 break;
         }
@@ -146,9 +173,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         nav_ai_btn.setOnClickListener(this);
         option_btn = hView.findViewById(R.id.option_btn);
         option_btn.setOnClickListener(this);
+        nav_key_btn = hView.findViewById(R.id.nav_key_btn);
+        nav_key_btn.setOnClickListener(this);
     }
 
-    private void roomSetting(){
+    private void roomSetting() throws ExecutionException, InterruptedException { //방 세팅
         roomList = findViewById(R.id.room_list);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -156,41 +185,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         rListAdapter = new RoomRecyclerAdapter(this);
         roomList.setAdapter(rListAdapter);
+
         setRoomList();
+        setDeviceList();
     }
 
-    private void setRoomList(){
-        //샘플 데이터
-        Room r1 = new Room("거실");
-        Room r2 = new Room("안방");
-        Room r3 = new Room("부엌");
+    private void setRoomList() throws ExecutionException, InterruptedException {
+        RoomTask task= new RoomTask();
+        RoomRifine refine = new RoomRifine();
+        String result=task.execute("CC1").get(); //현재 방 저장
 
-        Device d1 = new Device("전등1");
-        Device d2 = new Device("전등2");
-        Device d3 = new Device("에어컨");
-        d3.setFunc(FUNCTION_KEY_TEMP);
-        d3.addValue(FUNCTION_KEY_TEMP, "25");
-        Device d4 = new Device("공기청정기");
-        Device d5 = new Device("전등3");
-        Device d6 = new Device("전등4");
-        Device d7 = new Device("전등5");
-        Device d8 = new Device("후드");
+        System.out.println(result);
+        room = refine.getRoomList(result); //데이터 정제 결과물: ArrayList<Room>
+        for(int i=0; i<room.size(); i++) { //방 저장
+            rListAdapter.addRoom(room.get(i));
+        }
+    }
+    private void setDeviceList() throws ExecutionException, InterruptedException { //deviceSetting
+        DeviceTask task= new DeviceTask(); //디바이스 통신
+        ACLCurrentTask ACLTask= new ACLCurrentTask();
+        MoodLightTask MoodTask = new MoodLightTask();
+        WindowTask windowTask = new WindowTask();
 
-        r1.addDevice(d1);
-        r1.addDevice(d2);
-        r1.addDevice(d3);
-        r1.addDevice(d4);
-        r3.addDevice(d5);
-        r3.addDevice(d6);
-        r3.addDevice(d7);
-        r3.addDevice(d8);
-        sample.add(r1);
-        sample.add(r2);
-        sample.add(r3);
+        DeviceRifine refine = new DeviceRifine();
 
-        rListAdapter.addItem(r1);
-        rListAdapter.addItem(r2);
-        rListAdapter.addItem(r3);
+        String result = task.execute("12345").get();
+        System.out.println(result);
+
+        deviceArrayList = refine.getDeviceList(result);
+
+        String ACLCurrent=ACLTask.execute("current").get(); //공기 청정기 현재 상태
+        //String roomMoodRight= MoodTask.execute("room1/moodLight/current").get(); //방 1안에 무드등 현재 상태
+        //String window=windowTask.execute("room1/window/current").get();
+
+        for(int i=0; i<deviceArrayList.size(); i++){ //상태 갱신
+            if(deviceArrayList.get(i).getName().equals("공기청정기")){
+                deviceArrayList.get(i).setState(Integer.parseInt(ACLCurrent));
+            }
+            if(deviceArrayList.get(i).getRoom().equals("방1")){ //방 1
+                if(deviceArrayList.get(i).getDeviceKind().equals("무드등")){//무드등일 경우
+                    // deviceArrayList.get(i).setState(Integer.parseInt(roomMoodRight)); //상태 갱신
+                }else if(deviceArrayList.get(i).getDeviceKind().equals("스마트창문")){//스마트 창문일 경우
+                    //deviceArrayList.get(i).setState(Integer.parseInt(window)); //상태 갱신
+                }
+            }
+            rListAdapter.addDevice(deviceArrayList.get(i));
+        }
     }
 
     @Override

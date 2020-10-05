@@ -14,6 +14,7 @@ import android.view.View;
 import com.example.project_smart_home.R;
 import com.example.project_smart_home.ui.message.MessageActivity;
 
+// 사용법 액티비티
 public class ManualActivity extends AppCompatActivity {
 
     @Override

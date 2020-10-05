@@ -18,19 +18,22 @@ import com.example.project_smart_home.object.Room;
 import static com.example.project_smart_home.utils.Constants.EXTRA_MESSAGE_ROOM;
 import static com.example.project_smart_home.utils.Constants.TEXT_MEASUREDDATA;
 
+// 방 액티비티
+// 방의 실시간 측정 데이터를 확인하는 UI.
 public class RoomActivity extends AppCompatActivity {
-    Room room;
-    View[] dataViews = new View[4];
-    TextView[] dataValues = new TextView[4];
-    TextView[] optimalDataValues = new TextView[4];
-    TextView txtRecommend;
+    Room room;                                      // 방 정보
+    View[] dataViews = new View[4];                 // 측정 데이터 ui
+    TextView[] dataValues = new TextView[4];        // 데이터 값
+    TextView[] optimalDataValues = new TextView[4]; // 권장 데이터 값
+    TextView txtRecommend;                          // 권장 메시지
 
-    int[] viewId = { R.id.temp_item, R.id.hum_item, R.id.dust_item, R.id.disc_item };
+    int[] viewId = { R.id.temp_item, R.id.hum_item, R.id.dust_item, R.id.disc_item };   // layout id
 
-    MeasuredData sampleData;
+    MeasuredData sampleData;                        // 측정 데이터
 
+    // 샘플 데이터
     private void setSampleData(){
-        sampleData = new MeasuredData(28.2, 56.2, 17.9, 35);
+        sampleData = new MeasuredData(28.2, 56.2, 17.9);
     }
 
     @Override
@@ -42,7 +45,7 @@ public class RoomActivity extends AppCompatActivity {
         this.room = (Room) getIntent().getSerializableExtra(EXTRA_MESSAGE_ROOM);
 
         Toolbar toolbar = findViewById(R.id.room_name_toolbar);
-        toolbar.setTitle(room.getRoomname());
+        toolbar.setTitle(room.getRoom());
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -51,6 +54,7 @@ public class RoomActivity extends AppCompatActivity {
         setDataValues();
     }
 
+    // ui 적용
     private void bindViews(){
         for(int i = 0; i<4; i++) {
             dataViews[i] = findViewById(viewId[i]);
@@ -83,7 +87,7 @@ public class RoomActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case android.R.id.home:
+            case android.R.id.home:             //뒤로가기
                 finish();
                 return true;
         }
@@ -92,7 +96,7 @@ public class RoomActivity extends AppCompatActivity {
 
     public static Intent getStartIntent(Context context, Room room){
         Intent intent = new Intent(context, RoomActivity.class);
-        intent.putExtra(EXTRA_MESSAGE_ROOM,room);
+        intent.putExtra(EXTRA_MESSAGE_ROOM,room);       // 방 정보
         return intent;
     }
 }

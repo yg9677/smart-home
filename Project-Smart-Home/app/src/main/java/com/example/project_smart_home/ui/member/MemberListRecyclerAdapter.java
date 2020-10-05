@@ -10,12 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_smart_home.R;
-import com.example.project_smart_home.adapter.OnClickItem;
 import com.example.project_smart_home.object.Member;
-import com.example.project_smart_home.ui.room.OnClickRoom;
 
 import java.util.ArrayList;
 
+// MemberActivity의 RecyclerView Adapter
+// 구성원을 리스트 형식으로 표현.
 public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRecyclerAdapter.MemberViewHolder> {
     ArrayList<Member> memberArrayList = new ArrayList<Member>();
     OnClickMemberItem clickEvent;

@@ -13,4 +13,8 @@
 
     <dimen name="setting_item_height">70dp</dimen>
     <dimen name="setting_item_text_size">20dp</dimen>
+
+    <dimen name="day_txt_paddinghorizontal">10dp</dimen>
+    <dimen name="day_txt_paddingvertical">7dp</dimen>
+    <dimen name="days_margin">15dp</dimen>
 </resources>

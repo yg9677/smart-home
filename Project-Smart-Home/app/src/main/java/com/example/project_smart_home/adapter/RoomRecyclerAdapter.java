@@ -12,12 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_smart_home.R;
+import com.example.project_smart_home.object.Device;
 import com.example.project_smart_home.object.Room;
 
 import java.util.ArrayList;
 
 public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapter.ItemViewHolder> {
     ArrayList<Room> roomArrayList = new ArrayList<Room>();
+    ArrayList<Device> deviceArrayList = new ArrayList<>();
+
     private OnClickItem clickEvent;
 
     public RoomRecyclerAdapter(OnClickItem onClick) {
@@ -26,7 +29,7 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
 
     @NonNull
     @Override
-    public RoomRecyclerAdapter.ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.room_item, parent, false);
         return new ItemViewHolder(view, clickEvent, parent.getContext());
     }
@@ -41,9 +44,10 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
         return roomArrayList.size();
     }
 
-    public void addItem(Room room){
+    public void addRoom(Room room){
         roomArrayList.add(room);
     }
+    public void addDevice(Device device){deviceArrayList.add(device);}
 
     class ItemViewHolder extends RecyclerView.ViewHolder{
         private Context context;
@@ -68,7 +72,7 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
         }
 
         void onBind(Room room){
-            btnRoom.setText(room.getRoomname());
+            btnRoom.setText(room.getRoom());
             btnRoom.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -76,17 +80,19 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
                 }
             });
 
-            if(room.getDeviceCount() == 0){
+            if(room.getSize() == 0){
                 deviceGrid.setVisibility(View.GONE);
             }else {
                 emptyDevice.setVisibility(View.GONE);
                 deviceGrid.setLayoutParams(modifyHeight(deviceGrid, room));
-                DeviceGridViewAdapter dvGridAdapter = new DeviceGridViewAdapter(clickEvent, context, room.getRoomname());
+                DeviceGridViewAdapter dvGridAdapter = new DeviceGridViewAdapter(clickEvent, context, room.getRoom());
                 deviceGrid.setAdapter(dvGridAdapter);
-                System.out.println("devicelist size :: " + room.getDeviceCount());
-                for(int i = 0; i < room.getDeviceCount(); i++) {
-                    dvGridAdapter.addItem(room.getDevice(i));
-                    System.out.println("Device  num :: " + i);
+                System.out.println("devicelist size :: " + deviceArrayList.size());
+                for(int i = 0; i < deviceArrayList.size(); i++) {
+                    if(deviceArrayList.get(i).getRoom().equals(room.getRoom())) { //디바이스와 해당 방의 이름이 똑같을 시
+                        dvGridAdapter.addItem(deviceArrayList.get(i));
+                        System.out.println("Device  num :: " + i);
+                    }
                 }
             }
 
@@ -97,7 +103,7 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
             if (params == null){
                 params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             }
-            params.height += dh*(room.getDeviceCount()/2);
+            params.height += dh*(deviceArrayList.size()/2);
             return params;
         }
     }

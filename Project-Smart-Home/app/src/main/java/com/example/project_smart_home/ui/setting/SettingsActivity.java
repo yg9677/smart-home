@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.example.project_smart_home.R;
 import com.example.project_smart_home.ui.member.MemberActivity;
-
+// 설정 액티비티
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
@@ -28,7 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case android.R.id.home:
+            case android.R.id.home:         //뒤로가기
                 finish();
                 return true;
         }

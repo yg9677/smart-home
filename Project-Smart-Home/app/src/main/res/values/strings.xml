@@ -46,4 +46,7 @@
 
     <!-- 사용자 설정 인공지능 -->
     <string name="empty_user_setting_ai">사용자 설정 조건이 없어요.\n메뉴를 통해 추가해보세요.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

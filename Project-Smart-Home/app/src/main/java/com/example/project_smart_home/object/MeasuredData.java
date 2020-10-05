@@ -8,11 +8,11 @@ public class MeasuredData {
     private double dust;
     private double discomfort;
 
-    public MeasuredData(double temperature, double humidity, double dust, double discomfort) {
+    public MeasuredData(double temperature, double humidity, double dust) {
         this.temperature = temperature;
         this.humidity = humidity;
         this.dust = dust;
-        this.discomfort = discomfort;
+        this.discomfort = 1.8*temperature-0.55*(1-humidity)*(1.8*temperature-26)+32;
     }
 
     public double getTemperature() {

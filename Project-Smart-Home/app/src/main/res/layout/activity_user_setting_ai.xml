@@ -21,7 +21,7 @@
             app:toolbarId="@id/user_setting_ai_toolbar">
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/user_setting_ai_toolbar"
-                app:title="사용자 설정 인공지능"
+                app:title="사용자 설정 AI"
                 app:titleTextColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"

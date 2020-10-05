@@ -6,7 +6,8 @@
     android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp">
         <TextView
             android:id="@+id/temp_con_txt"
             android:text="온도"
@@ -21,13 +22,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/temp_con_txt"/>
+            app:layout_constraintRight_toLeftOf="@id/temp_above_below_group"/>
         <RadioGroup
+            android:id="@+id/temp_above_below_group"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/temp_sp">
+            app:layout_constraintRight_toRightOf="parent">
             <RadioButton
                 android:text="이상"
                 android:textSize="20dp"
@@ -46,20 +48,21 @@
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/temp_con_txt"
             app:layout_constraintLeft_toLeftOf="parent"/>
         <Spinner
             android:id="@+id/dust_sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/temp_con_txt"/>
+            app:layout_constraintTop_toBottomOf="@id/temp_con_txt"
+            app:layout_constraintRight_toLeftOf="@id/dust_above_below_group"/>
         <RadioGroup
+            android:id="@+id/dust_above_below_group"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/temp_sp">
+            app:layout_constraintTop_toBottomOf="@id/temp_con_txt"
+            app:layout_constraintRight_toRightOf="parent">
             <RadioButton
                 android:text="이상"
                 android:textSize="20dp"
@@ -78,20 +81,21 @@
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dust_con_txt"
             app:layout_constraintLeft_toLeftOf="parent"/>
         <Spinner
             android:id="@+id/hum_sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/temp_con_txt"/>
+            app:layout_constraintTop_toBottomOf="@id/dust_con_txt"
+            app:layout_constraintRight_toLeftOf="@id/hum_above_below_group"/>
         <RadioGroup
+            android:id="@+id/hum_above_below_group"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/temp_sp">
+            app:layout_constraintTop_toBottomOf="@id/dust_con_txt"
+            app:layout_constraintRight_toRightOf="parent">
             <RadioButton
                 android:text="이상"
                 android:textSize="20dp"

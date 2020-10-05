@@ -16,6 +16,7 @@ import com.example.project_smart_home.object.Member;
 
 import java.util.ArrayList;
 
+// 멤버 액티비티
 public class MemberActivity extends AppCompatActivity implements MemberListRecyclerAdapter.OnClickMemberItem{
     MemberListRecyclerAdapter adapter;
 
@@ -49,20 +50,6 @@ public class MemberActivity extends AppCompatActivity implements MemberListRecyc
         members.add(new Member("엄마"));
         members.add(new Member("아빠"));
         members.add(new Member("동생"));
-        members.add(new Member("나"));
-        members.add(new Member("나"));
-        members.add(new Member("나"));
-        members.add(new Member("나"));
-        members.add(new Member("나"));
-        members.add(new Member("나"));
-        members.add(new Member("나"));
-        members.add(new Member("나"));
-        members.add(new Member("나"));
-        members.add(new Member("나"));
-        members.add(new Member("나"));
-        members.add(new Member("나"));
-        members.add(new Member("나"));
-        members.add(new Member("나"));
         members.add(new Member("나"));
 
 

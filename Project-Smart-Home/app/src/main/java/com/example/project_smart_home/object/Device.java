@@ -4,42 +4,40 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Device implements Serializable {
+public class Device extends Room implements Serializable{
+
     String name;
-    String func;
-    Map<String, String> values;
-    boolean onoff;
+    String deviceKind;
+    String model;
+    int state;
 
-    public Device(String name){
+    public Device(String room, int size, String kind, String address, String user,String name, String deviceKind, String model, int state){
+        super(room, size, kind,address,user);
         this.name = name;
-        onoff = false;
-        func = "";
-        values = new HashMap<String, String>();
+        this.deviceKind =deviceKind;
+        this.model = model;
+        this.state = state;
     }
-    public String getFunc(){ return func; }
 
-    public void setFunc(String f){ func = f; }
-
-    public void addValue(String key, String value){ values.put(key, value); }
-
-    public void removeValue(String key){ values.remove(key); }
-
-    public String getValue(String key){ return values.get(key); }
+    public Device(){}
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setOnoff(boolean onoff) {
-        this.onoff = onoff;
-    }
-
-    public boolean isOnoff() {
-        return onoff;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setDeviceKind(String deviceKind){this.deviceKind=deviceKind;}
+
+    public String getDeviceKind(){return this.deviceKind;}
+
+    public void setModel(String model){this.model=model;}
+
+    public String getModel(){return this.model;}
+
+    public void setState(int state){this.state=state;}
+
+    public int getState(){return this.state;}
 }

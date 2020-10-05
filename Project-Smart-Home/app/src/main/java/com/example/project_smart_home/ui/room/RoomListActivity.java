@@ -23,11 +23,12 @@ import java.util.ArrayList;
 
 import static com.example.project_smart_home.utils.Constants.EXTRA_MESSAGE_ROOM_LIST;
 
+// 방 목록 액티비티
 public class RoomListActivity extends AppCompatActivity implements RoomListRecyclerAdapter.OnStartDragListener, OnClickRoom {
-    RoomListRecyclerAdapter adapter;
-    ItemTouchHelper itemTouchHelper;
+    RoomListRecyclerAdapter adapter;        // 방 리스클러뷰 어뎁터
+    ItemTouchHelper itemTouchHelper;        // 드래그 기능
 
-    ArrayList<Room> rooms;
+    ArrayList<Room> rooms;                  // 방 목록
 
 
     @Override
@@ -80,6 +81,7 @@ public class RoomListActivity extends AppCompatActivity implements RoomListRecyc
         itemTouchHelper.startDrag(holder);
     }
 
+    // 방을 클릭했을 경우 RoomActivity로 전환
     @Override
     public void onClickRoom(int position) {
         Intent intent = RoomActivity.getStartIntent(this, rooms.get(position));

@@ -26,15 +26,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+// RoomListActivity의 RecyclerView 어뎁터
+// 방 목록을 리스트 형식으로 표현
 public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecyclerAdapter.RoomViewHolder>
         implements RoomItemTouchHelperCallback.OnItemMoveListener{
-    ArrayList<Room> roomArrayList = new ArrayList<Room>();
-    private OnClickRoom clickEvent;
-    private OnStartDragListener startDragListener;
+    ArrayList<Room> roomArrayList = new ArrayList<Room>();         // 방 목록
+    private OnClickRoom clickEvent;                             // 방을 클릭했을 때 발생하는 이벤트(RoomListActivity에서 구현)
+    private OnStartDragListener startDragListener;              // 드래그 기능
 
     public interface OnStartDragListener{
         void onStartDrag(RoomViewHolder holder);
-    }
+}
 
     public RoomListRecyclerAdapter(OnClickRoom onClick, OnStartDragListener listener) {
         this.clickEvent = onClick;
@@ -85,8 +87,6 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
         private TextView txtRoomName;
         private ImageButton dragHandler;
         private View view;
-
-        int dh;             // 디바이스 아이템 높이 - device_item_height
 
         public RoomViewHolder(@NonNull View itemView, OnClickRoom onClick) {
             super(itemView);
