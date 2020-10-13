@@ -5,16 +5,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.example.project_smart_home.Task.ACLCurrentTask;
-import com.example.project_smart_home.Task.DeviceTask;
-import com.example.project_smart_home.Task.MoodLightTask;
-import com.example.project_smart_home.Task.WindowTask;
 import com.example.project_smart_home.adapter.OnClickItem;
 import com.example.project_smart_home.adapter.RoomRecyclerAdapter;
+import com.example.project_smart_home.bluetooth.BluetoothConnector;
+import com.example.project_smart_home.object.AISet;
 import com.example.project_smart_home.object.Device;
+import com.example.project_smart_home.object.MeasuredData;
 import com.example.project_smart_home.object.Room;
-import com.example.project_smart_home.refine.DeviceRifine;
-import com.example.project_smart_home.refine.RoomRifine;
+import com.example.project_smart_home.order.DeviceOrder;
+import com.example.project_smart_home.order.Order;
+import com.example.project_smart_home.order.RoomListOrder;
+import com.example.project_smart_home.thread.AIManager;
+import com.example.project_smart_home.thread.Measurement;
+import com.example.project_smart_home.thread.OnThreadListener;
 import com.example.project_smart_home.ui.AI.AIActivity;
 import com.example.project_smart_home.ui.manual.ManualActivity;
 import com.example.project_smart_home.ui.member.MemberActivity;
@@ -22,13 +25,12 @@ import com.example.project_smart_home.ui.message.MessageActivity;
 import com.example.project_smart_home.ui.room.RoomListActivity;
 import com.example.project_smart_home.ui.Enrollment.KeyActivity;
 
-import com.example.project_smart_home.Task.RoomTask;
-
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import com.example.project_smart_home.ui.setting.SettingsActivity;
@@ -46,13 +48,15 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
-import static com.example.project_smart_home.utils.Constants.FUNCTION_KEY_TEMP;
+import static com.example.project_smart_home.utils.Constants.CONNECTED_MODE_SERVER;
+import static com.example.project_smart_home.utils.Constants.TYPE_OF_DEVICE;
+import static com.example.project_smart_home.utils.Constants.TYPE_OF_RECEIVE;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        NavigationView.OnNavigationItemSelectedListener, OnClickItem {
+        NavigationView.OnNavigationItemSelectedListener, OnClickItem, BluetoothConnector.OnBluetoothConnectorListener,
+        OnThreadListener {
     private Button nav_room_btn, nav_member_btn, nav_ai_btn, nav_key_btn;
     private ImageButton option_btn;
 
@@ -64,10 +68,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RecyclerView roomList;
     RoomRecyclerAdapter rListAdapter;
 
-
     public final static String myIp="192.168.219.106";
     ArrayList<Room> room = new ArrayList<Room>();
     ArrayList<Device> deviceArrayList = new ArrayList<>();
+    ArrayList<AISet> aiSets = new ArrayList<>();
+
+    MasterController masterController = new MasterController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,21 +98,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
 
+        Measurement measurement = new Measurement(room.size(), this);
+        measurement.start();
+
+        AIManager aiManager = new AIManager(aiSets, this);
+        aiManager.start();
+        
         btnSetting();
-        try {
-            roomSetting();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        roomSetting();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        switch (requestCode) {
+//            case BT_REQUEST_ENABLE:
+//                if (resultCode == RESULT_OK) { // 블루투스 활성화를 확인을 클릭하였다면
+//                    Toast.makeText(getApplicationContext(), "블루투스 활성화", Toast.LENGTH_LONG).show();
+//                } else if (resultCode == RESULT_CANCELED) { // 블루투스 활성화를 취소를 클릭하였다면
+//                    Toast.makeText(getApplicationContext(), "취소", Toast.LENGTH_LONG).show();
+//                }
+//                break;
+//        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.bluetooth, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.menu.bluetooth:
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public static Intent getStartIntent(Context context){
@@ -177,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         nav_key_btn.setOnClickListener(this);
     }
 
-    private void roomSetting() throws ExecutionException, InterruptedException { //방 세팅
+    private void roomSetting(){ //방 세팅
         roomList = findViewById(R.id.room_list);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -187,54 +218,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         roomList.setAdapter(rListAdapter);
 
         setRoomList();
-        setDeviceList();
     }
 
-    private void setRoomList() throws ExecutionException, InterruptedException {
-        RoomTask task= new RoomTask();
-        RoomRifine refine = new RoomRifine();
-        String result=task.execute("CC1").get(); //현재 방 저장
+    private void setRoomList(){
+        Order requestRoomList = new Order(CONNECTED_MODE_SERVER, TYPE_OF_RECEIVE, "get_roomlist");
+        RoomListOrder resultOrder = (RoomListOrder) masterController.communicate(requestRoomList);
 
-        System.out.println(result);
-        room = refine.getRoomList(result); //데이터 정제 결과물: ArrayList<Room>
+        room = resultOrder.getRoomArrayList();
         for(int i=0; i<room.size(); i++) { //방 저장
             rListAdapter.addRoom(room.get(i));
         }
     }
-    private void setDeviceList() throws ExecutionException, InterruptedException { //deviceSetting
-        DeviceTask task= new DeviceTask(); //디바이스 통신
-        ACLCurrentTask ACLTask= new ACLCurrentTask();
-        MoodLightTask MoodTask = new MoodLightTask();
-        WindowTask windowTask = new WindowTask();
 
-        DeviceRifine refine = new DeviceRifine();
-
-        String result = task.execute("12345").get();
-        System.out.println(result);
-
-        deviceArrayList = refine.getDeviceList(result);
-
-        String ACLCurrent=ACLTask.execute("current").get(); //공기 청정기 현재 상태
-        //String roomMoodRight= MoodTask.execute("room1/moodLight/current").get(); //방 1안에 무드등 현재 상태
-        //String window=windowTask.execute("room1/window/current").get();
-
-        for(int i=0; i<deviceArrayList.size(); i++){ //상태 갱신
-            if(deviceArrayList.get(i).getName().equals("공기청정기")){
-                deviceArrayList.get(i).setState(Integer.parseInt(ACLCurrent));
-            }
-            if(deviceArrayList.get(i).getRoom().equals("방1")){ //방 1
-                if(deviceArrayList.get(i).getDeviceKind().equals("무드등")){//무드등일 경우
-                    // deviceArrayList.get(i).setState(Integer.parseInt(roomMoodRight)); //상태 갱신
-                }else if(deviceArrayList.get(i).getDeviceKind().equals("스마트창문")){//스마트 창문일 경우
-                    //deviceArrayList.get(i).setState(Integer.parseInt(window)); //상태 갱신
-                }
-            }
-            rListAdapter.addDevice(deviceArrayList.get(i));
-        }
+    @Override
+    public void onClickItem(Device deviceItem) {
+        Order deviceOrder = new DeviceOrder(TYPE_OF_DEVICE, "device_onoff", deviceItem);
+        masterController.communicate(deviceOrder);
     }
 
     @Override
-    public void onClickItem() {
+    public void startActivityForResultInConnector(Intent it, int constant) {
+        startActivityForResult(it, constant);
+    }
 
+
+    @Override
+    public void onUpdateMeasuredData(MeasuredData md, int i) {
+        room.get(i).setMeasuredData(md);
+    }
+
+    @Override
+    public void onWork(String name) {
+        Order deviceOrder = new DeviceOrder(TYPE_OF_DEVICE, "device_on", findDeviceByName(name));
+        masterController.communicate(deviceOrder);
+    }
+
+    @Override
+    public void offWork(String name) {
+        Order deviceOrder = new DeviceOrder(TYPE_OF_DEVICE, "device_off", findDeviceByName(name));
+        masterController.communicate(deviceOrder);
+    }
+
+    @Override
+    public MeasuredData getMeasuredData(String roomname) {
+        for(int i = 0; i < room.size(); i++)
+            if (room.get(i).getRoom().equals(roomname))
+                return room.get(i).getMeasuredData();
+        return null;
+    }
+
+    private Device findDeviceByName(String name){
+        Device result = null;
+        for(int i = 0; i < room.size(); i++){
+            if ((result = room.get(i).findDevice(name)) != null)
+                break;
+        }
+        return result;
     }
 }
