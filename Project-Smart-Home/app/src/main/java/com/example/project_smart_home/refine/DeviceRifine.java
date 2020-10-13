@@ -1,9 +1,18 @@
 package com.example.project_smart_home.refine;
+import com.example.project_smart_home.object.AirCleaner;
 import com.example.project_smart_home.object.Device;
+import com.example.project_smart_home.object.DoorLock;
+import com.example.project_smart_home.object.MoodLight;
+import com.example.project_smart_home.object.Window;
 
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
+import static com.example.project_smart_home.utils.Constants.AIRCLEANER;
+import static com.example.project_smart_home.utils.Constants.DOORLOCK;
+import static com.example.project_smart_home.utils.Constants.MOODLIGHT;
+import static com.example.project_smart_home.utils.Constants.WINDOW;
 
 public class DeviceRifine {
     Device device;
@@ -38,11 +47,33 @@ public class DeviceRifine {
                 case 5:
                     device.setState(Integer.parseInt(temp));
                     i=1;
-                    list.add(device);
+                    list.add(castingDevice(device));
                     break;
             }
         }
 
         return list;
+    }
+
+    private Device castingDevice(Device device){
+        Device castDevice;
+        switch (device.getDeviceKind()){
+            case AIRCLEANER:                                        // 공기청정기
+                castDevice = new AirCleaner();
+                break;
+            case DOORLOCK:                                          // 도어락
+                castDevice = new DoorLock();
+                break;
+            case MOODLIGHT:                                         // 무드등
+                castDevice = new MoodLight();
+                break;
+            case WINDOW:                                            // 스마트창문
+                castDevice = new Window();
+                break;
+                default:
+                    castDevice = device;
+        }
+        castDevice.copy(device);
+        return castDevice;
     }
 }

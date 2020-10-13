@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         AIManager aiManager = new AIManager(aiSets, this);
         aiManager.start();
-        
+
         btnSetting();
         roomSetting();
     }

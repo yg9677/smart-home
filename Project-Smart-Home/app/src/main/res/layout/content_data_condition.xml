@@ -31,12 +31,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent">
             <RadioButton
+                android:id="@+id/temp_gte_rbtn"
                 android:text="이상"
                 android:textSize="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <RadioButton
-                android:text="이하"
+                android:id="@+id/temp_lt_rbtn"
+                android:text="미만"
                 android:textSize="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -64,12 +66,14 @@
             app:layout_constraintTop_toBottomOf="@id/temp_con_txt"
             app:layout_constraintRight_toRightOf="parent">
             <RadioButton
+                android:id="@+id/dust_gte_rbtn"
                 android:text="이상"
                 android:textSize="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <RadioButton
-                android:text="이하"
+                android:id="@+id/dust_lt_rbtn"
+                android:text="미만"
                 android:textSize="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -97,15 +101,26 @@
             app:layout_constraintTop_toBottomOf="@id/dust_con_txt"
             app:layout_constraintRight_toRightOf="parent">
             <RadioButton
+                android:id="@+id/hum_gte_rbtn"
                 android:text="이상"
                 android:textSize="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <RadioButton
-                android:text="이하"
+                android:id="@+id/hum_lt_rbtn"
+                android:text="미만"
                 android:textSize="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </RadioGroup>
+        <Button
+            android:id="@+id/data_con_save_btn"
+            android:text="저장"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/hum_above_below_group"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

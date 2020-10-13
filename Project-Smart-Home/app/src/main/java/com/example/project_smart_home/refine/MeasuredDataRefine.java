@@ -1,18 +1,17 @@
 package com.example.project_smart_home.refine;
-import com.example.project_smart_home.object.Device;
-import com.example.project_smart_home.object.DeviceData;
+import com.example.project_smart_home.object.MeasuredData;
 
 
 
 import java.util.StringTokenizer;
 
-public class DeviceDataRefine {
-    DeviceData deviceData;
+public class MeasuredDataRefine {
+    MeasuredData measuredData;
 
     int i=1;
-    public DeviceDataRefine(){}
+    public MeasuredDataRefine(){}
 
-    public DeviceData getDeviceData(String result){
+    public MeasuredData getMeasuredData(String result){
         StringTokenizer token;
         token = new StringTokenizer(result,"/" );
         String temp;
@@ -20,33 +19,33 @@ public class DeviceDataRefine {
             temp = token.nextToken(); //값 받아오기
             switch(i){
                 case 1:
-                    deviceData=new DeviceData();
-                    deviceData.setNumber(Integer.parseInt(temp));
+                    measuredData =new MeasuredData();
+                    measuredData.setNumber(Integer.parseInt(temp));
                     i++;
                     break;
                 case 2:
-                    deviceData.setRoom(temp);
+                    measuredData.setRoom(temp);
                     i++;
                     break;
                 case 3:
-                    deviceData.setRegday(temp);
+                    measuredData.setRegday(temp);
                     i++;
                     break;
                 case 4:
-                    deviceData.setTemperature(Integer.parseInt(temp));
+                    measuredData.setTemperature(Integer.parseInt(temp));
                     i++;
                     break;
                 case 5:
-                    deviceData.setHumidity(Integer.parseInt(temp));
+                    measuredData.setHumidity(Integer.parseInt(temp));
                     i++;
                     break;
                 case 6:
-                    deviceData.setDust(Integer.parseInt(temp));
+                    measuredData.setDust(Integer.parseInt(temp));
                     i=1;
                     break;
             }
         }
 
-        return deviceData;
+        return measuredData;
     }
 }

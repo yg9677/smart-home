@@ -33,7 +33,7 @@ public class RoomActivity extends AppCompatActivity {
 
     // 샘플 데이터
     private void setSampleData(){
-        sampleData = new MeasuredData(28.2, 56.2, 17.9);
+        sampleData = room.getMeasuredData();
     }
 
     @Override
@@ -77,7 +77,7 @@ public class RoomActivity extends AppCompatActivity {
         dataValues[0].setText(String.valueOf(sampleData.getTemperature()));
         dataValues[1].setText(String.valueOf(sampleData.getHumidity()) + "%");
         dataValues[2].setText(String.valueOf(sampleData.getDust()));
-        dataValues[3].setText(String.valueOf(sampleData.getDiscomfort()));
+        dataValues[3].setText("모름");
         optimalDataValues[0].setText("26");
         optimalDataValues[1].setText("30%");
         optimalDataValues[2].setText("0");

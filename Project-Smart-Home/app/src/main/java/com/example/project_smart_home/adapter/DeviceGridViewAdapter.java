@@ -11,13 +11,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.project_smart_home.R;
-import com.example.project_smart_home.Task.DoorLockTask;
-import com.example.project_smart_home.Task.MoodLightTask;
-import com.example.project_smart_home.Task.WindowTask;
 import com.example.project_smart_home.object.Device;
 import com.example.project_smart_home.ui.device.DeviceControllerActivity;
-import com.example.project_smart_home.Task.ACLAutoTask;
-import com.example.project_smart_home.Task.ACLManualTask;
+
 import java.util.ArrayList;
 
 public class DeviceGridViewAdapter extends BaseAdapter {
@@ -27,11 +23,6 @@ public class DeviceGridViewAdapter extends BaseAdapter {
     OnClickItem clickEvent;
     ImageButton btnOnOff;
     Button btnFunc;
-    ACLManualTask mtask;
-    ACLAutoTask atask;
-    MoodLightTask moodTask;
-    DoorLockTask doorTask;
-    WindowTask windowTask;
 
     public DeviceGridViewAdapter(OnClickItem onClick, Context context, String roomname){
         clickEvent = onClick;
@@ -112,64 +103,9 @@ public class DeviceGridViewAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     //버튼 on off
-                    if (deviceItem.getName().equals("공기청정기")) {
-                        mtask = new ACLManualTask();
-                        atask = new ACLAutoTask();
-                        if (deviceItem.getState() == 0) { //0번이 수동모드 켜짐
-                            deviceItem.setState(1); //인공지능 모드 전환
-                            txtFunc.setText("인공지능모드");
-                            atask.execute("auto"); //atask
-                        } else if (deviceItem.getState() == 1) { //1번이 인공지능 모드
-                            deviceItem.setState(2); //꺼짐 전환
-                            txtFunc.setText("꺼짐");
-                            mtask.execute("manual/4"); //mtask
-                        } else if (deviceItem.getState() == 2) { //2번이 수동모드 꺼짐
-                            deviceItem.setState(0); //켜짐 전환
-                            txtFunc.setText("켜짐");
-                            mtask.execute("manual/3");//mtask
-                        }
-                    }
-                    if(deviceItem.getDeviceKind().equals("도어락")){
-                        doorTask = new DoorLockTask();
-                        doorTask.execute("door/open");
-                    }
-
-                    if(deviceItem.getRoom().equals("방1")){
-                        if(deviceItem.getDeviceKind().equals("무드등")){
-                            moodTask=new MoodLightTask();
-                            if(deviceItem.getState()==1){ //on 상태
-                                deviceItem.setState(2);
-                                btnOnOff.setSelected(false);
-                                txtFunc.setText("꺼짐");
-                                moodTask.execute("room1/moodLight/off");
-                            }else if(deviceItem.getState()==2){ //off 상태
-                                deviceItem.setState(1);
-                                btnOnOff.setSelected(true);
-                                txtFunc.setText("켜짐");
-                                moodTask.execute("room1/moodLight/on");
-                            }
-                        }else if(deviceItem.getDeviceKind().equals("스마트창문")){
-                            windowTask=new WindowTask();
-                            if(deviceItem.getState()==0){ //close 상태
-                                deviceItem.setState(1);
-                                btnOnOff.setSelected(false);
-                                txtFunc.setText("열림");
-                                windowTask.execute("room1/window/open");
-                            }else if(deviceItem.getState()==1){ //open 상태
-                                deviceItem.setState(2);
-                                btnOnOff.setSelected(true);
-                                txtFunc.setText("스마트 모드");
-                                windowTask.execute("room1/window/aiMode");
-                            }else if(deviceItem.getState()==2){ //AI모드 상태
-                                deviceItem.setState(0); //닫힘
-                                btnOnOff.setSelected(false);
-                                txtFunc.setText("닫힘");
-                                windowTask.execute("room1/window/manualMode"); //수동 모드로 전환
-                                windowTask=new WindowTask();
-                                windowTask.execute("room1/window/close"); //닫기
-                            }
-                        }
-                    }
+                    clickEvent.onClickItem(deviceItem);
+                    txtFunc.setText(deviceItem.getMode());
+                    btnOnOff.setSelected(deviceItem.isOnoff());
                 }
             });
 

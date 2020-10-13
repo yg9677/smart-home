@@ -13,18 +13,20 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ACLManualTask extends AsyncTask<String, Void, String> {
+public class CommunicateTask extends AsyncTask<String, Void, String> {
     String sendMsg, receiveMsg;
+    String taskType = null;
+
     @Override
     protected String doInBackground(String... strings) {
         try {
             String str;
-            URL url = new URL("http://"+MainActivity.myIp+":8080/SmartHomeProject/AirCleanerCom/ManualMode.jsp");
+            URL url = new URL("http://"+ MainActivity.myIp+":8080/SmartHomeProject/AirCleanerCom/AutoMode.jsp");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             conn.setRequestMethod("POST");
             PrintWriter osw = new PrintWriter(conn.getOutputStream());
-            sendMsg = "mode="+strings[0];
+            sendMsg = taskType + "=" + strings[1];
             osw.write(sendMsg);
             osw.flush();
             if(conn.getResponseCode() == conn.HTTP_OK) {
@@ -47,5 +49,8 @@ public class ACLManualTask extends AsyncTask<String, Void, String> {
         }
         return receiveMsg;
     }
-}
 
+    public void selectTask(String type){
+        taskType = type;
+    }
+}

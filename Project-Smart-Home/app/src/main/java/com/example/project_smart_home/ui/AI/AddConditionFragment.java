@@ -5,17 +5,23 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.project_smart_home.R;
+import com.example.project_smart_home.object.AISet;
+import com.example.project_smart_home.object.Condition;
 import com.example.project_smart_home.object.Room;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.ArrayList;
 
 import static com.example.project_smart_home.utils.Constants.AI_CONDITION_KEY_DATA;
 import static com.example.project_smart_home.utils.Constants.AI_CONDITION_KEY_DATE;
@@ -28,13 +34,16 @@ public class AddConditionFragment extends Fragment implements View.OnClickListen
 
     // TODO: Rename and change types of parameters
     private Room room;
-    private String mParam2;
+    private AISet aiSet;
 
     private OnFragmentInteractionListener mListener;
 
     Button btnDateCon, btnDataCon, btnAddWorking, btnAddAI;
     TextView txtEmptyCon, txtEmptyWorking;
     RecyclerView listCon, listWorking;
+
+    ConditionListAdapter condAdapter;
+    WorkingListAdapter workAdapter;
 
     public AddConditionFragment() {
         // Required empty public constructor
@@ -49,11 +58,11 @@ public class AddConditionFragment extends Fragment implements View.OnClickListen
      * @return A new instance of fragment AddConditionFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddConditionFragment newInstance(Room param1, String param2) {
+    public static AddConditionFragment newInstance(Room param1, AISet param2) {
         AddConditionFragment fragment = new AddConditionFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,7 +72,7 @@ public class AddConditionFragment extends Fragment implements View.OnClickListen
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             room = (Room) getArguments().getSerializable(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            aiSet = (AISet)getArguments().getSerializable(ARG_PARAM2);
         }
     }
 
@@ -88,15 +97,27 @@ public class AddConditionFragment extends Fragment implements View.OnClickListen
         btnAddAI.setOnClickListener(this);
 
         listCon = view.findViewById(R.id.condition_list);
-        listWorking = view.findViewById(R.id.working_list);
+        listCon.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        condAdapter = new ConditionListAdapter();
+        listCon.setAdapter(condAdapter);
 
+        listWorking = view.findViewById(R.id.working_list);
+        listWorking.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        workAdapter = new WorkingListAdapter();
+        listWorking.setAdapter(workAdapter);
+
+        setList();
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    public void setList(){
+        if (!aiSet.isEmpty()){
+            if (!aiSet.isNullDateCondition())
+                condAdapter.addCondition(aiSet.getDateCondition());
+            for (int i = 0; i < aiSet.getDataCondSize(); i++)
+                condAdapter.addCondition(aiSet.getDataCondition(i));
+            for (int i = 0; i < aiSet.getWorkingsSize(); i++)
+                workAdapter.addItem(aiSet.getDeviceWorking(i));
         }
     }
 
@@ -133,7 +154,7 @@ public class AddConditionFragment extends Fragment implements View.OnClickListen
         }
         // 인공지능 추가
         if (view.getId() == btnAddAI.getId()){
-            mListener.addAI_Interaction();
+            mListener.addAI_Interaction(aiSet);
         }
     }
 

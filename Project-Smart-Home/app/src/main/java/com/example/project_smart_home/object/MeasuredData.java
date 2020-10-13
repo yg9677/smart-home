@@ -1,49 +1,67 @@
 package com.example.project_smart_home.object;
 
-import java.io.Serializable;
-
 public class MeasuredData {
-    private double temperature;
-    private double humidity;
-    private double dust;
-    private double discomfort;
+    private int number;
+    private String room;
+    private String time_ymd;
+    private String time_hms;
+    private String regday;
+    private int temperature;
+    private int humidity;
+    private int dust;
 
-    public MeasuredData(double temperature, double humidity, double dust) {
-        this.temperature = temperature;
-        this.humidity = humidity;
-        this.dust = dust;
-        this.discomfort = 1.8*temperature-0.55*(1-humidity)*(1.8*temperature-26)+32;
+    public String toString() {
+        return number+"/"+room+"/"+regday+"/"+temperature+"/"+humidity+"/"+dust+"/";
     }
 
-    public double getTemperature() {
+    public int getNumber() {
+        return number;
+    }
+    public void setNumber(int number) {
+        this.number=number;
+    }
+    public String getRoom() {
+        return room;
+    }
+    public void setRoom(String room) {
+        this.room=room;
+    }
+    public String getTimeYMD() {
+        return this.time_ymd;
+    }
+    public void setTimeYMD(String time_ymd) {
+        this.time_ymd=time_ymd;
+    }
+    public String getTimeHMS() {
+        return this.time_hms;
+    }
+    public void setTimeHMS(String time_hms) {
+        this.time_hms=time_hms;
+    }
+    public String getRegday() {
+        return regday;
+    }
+    public void setRegday(String regday) {
+        this.regday=regday;
+    }
+
+    public int getTemperature() {
         return temperature;
     }
-
-    public double getHumidity() {
+    public void setTemperature(int temperature) {
+        this.temperature=temperature;
+    }
+    public int getHumidity() {
         return humidity;
     }
-
-    public double getDust() {
+    public void setHumidity(int humidit) {
+        this.humidity=humidit;
+    }
+    public int getDust() {
         return dust;
     }
-
-    public double getDiscomfort() {
-        return discomfort;
+    public void setDust(int dust) {
+        this.dust=dust;
     }
 
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
-    }
-
-    public void setHumidity(double humidity) {
-        this.humidity = humidity;
-    }
-
-    public void setDust(double dust) {
-        this.dust = dust;
-    }
-
-    public void setDiscomfort(double discomfort) {
-        this.discomfort = discomfort;
-    }
 }

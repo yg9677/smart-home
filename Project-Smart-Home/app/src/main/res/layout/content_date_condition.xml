@@ -7,48 +7,46 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <RadioGroup
-            android:id="@+id/interval_group"
+        android:layout_height="match_parent">
+        <RadioButton
+            android:id="@+id/always_rbtn"
+            android:text="항상"
+            android:textSize="20dp"
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
-            <RadioButton
-                android:id="@+id/always_rbtn"
-                android:text="항상"
-                android:textSize="20dp"
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <RadioButton
-                android:id="@+id/interval1_rbtn"
-                android:text="30분 마다"
-                android:textSize="20dp"
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <RadioButton
-                android:id="@+id/interval2_rbtn"
-                android:text="15분 마다"
-                android:textSize="20dp"
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <RadioButton
-                android:id="@+id/interval3_rbtn"
-                android:text="그 외"
-                android:textSize="20dp"
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </RadioGroup>
+            app:layout_constraintTop_toTopOf="parent"/>
+        <RadioButton
+            android:id="@+id/interval1_rbtn"
+            android:text="30분 마다"
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/always_rbtn"/>
+        <RadioButton
+            android:id="@+id/interval2_rbtn"
+            android:text="15분 마다"
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/interval1_rbtn"/>
+        <RadioButton
+            android:id="@+id/interval3_rbtn"
+            android:text="그 외"
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/interval2_rbtn">
+        </RadioButton>
         <Spinner
             android:id="@+id/interval_sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/interval_group"
+            app:layout_constraintTop_toBottomOf="@id/interval3_rbtn"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/timepicker_layout"
             android:layout_marginLeft="40dp"/>
         <TextView
             android:text="마다"
@@ -56,7 +54,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toRightOf="@id/interval_sp"
-            app:layout_constraintTop_toBottomOf="@id/interval_group"/>
+            app:layout_constraintTop_toBottomOf="@id/interval3_rbtn"/>
+        <RadioButton
+            android:id="@+id/interval4_rbtn"
+            android:text="특정 시간"
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/interval_sp"/>
+
 
 
         <LinearLayout
@@ -64,9 +71,10 @@
             android:background="@drawable/item_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/interval_sp">
+            app:layout_constraintTop_toBottomOf="@id/interval4_rbtn">
 
             <TimePicker
+                android:id="@+id/timepicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:timePickerMode="spinner" />
@@ -78,7 +86,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-
             app:layout_constraintTop_toBottomOf="@id/timepicker_layout">
             <TextView
                 android:id="@+id/day1_btn"
@@ -159,5 +166,14 @@
                 android:paddingHorizontal="@dimen/day_txt_paddinghorizontal"
                 android:paddingVertical="@dimen/day_txt_paddingvertical" />
         </LinearLayout>
+        <Button
+            android:id="@+id/date_con_save_btn"
+            android:text="저장"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/daypicker_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

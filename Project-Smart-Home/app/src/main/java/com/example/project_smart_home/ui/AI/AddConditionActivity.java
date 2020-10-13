@@ -9,12 +9,18 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import com.example.project_smart_home.R;
+import com.example.project_smart_home.object.AISet;
+import com.example.project_smart_home.object.DataCondition;
+import com.example.project_smart_home.object.DateCondition;
 import com.example.project_smart_home.object.Device;
+import com.example.project_smart_home.object.DeviceWorking;
 import com.example.project_smart_home.object.Room;
 
 import java.util.ArrayList;
@@ -26,12 +32,17 @@ import static com.example.project_smart_home.utils.Constants.EXTRA_MESSAGE_ROOM_
 // 조건 추가 액티비티
 public class AddConditionActivity extends AppCompatActivity implements OnFragmentInteractionListener{
     ArrayList<Room> roomArrayList = new ArrayList<Room>();
+    Room selectedRoom;
+    AISet aiSet;
+
     Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_condition);
+
+        aiSet = new AISet();
         roomArrayList = (ArrayList<Room>) getIntent().getSerializableExtra(EXTRA_MESSAGE_ROOM_LIST);
 
         toolbar = findViewById(R.id.add_condition_toolbar);
@@ -71,7 +82,9 @@ public class AddConditionActivity extends AppCompatActivity implements OnFragmen
 
     @Override
     public void onSelectRoomInteraction(Room room) {
-        replaceFragment(AddConditionFragment.newInstance(room, " "));
+        selectedRoom = room;
+        aiSet.setRoomname(selectedRoom.getRoom());
+        replaceFragment(AddConditionFragment.newInstance(room, aiSet));
     }
 
     @Override
@@ -91,12 +104,38 @@ public class AddConditionActivity extends AppCompatActivity implements OnFragmen
     }
 
     @Override
-    public void addAI_Interaction() {
-        finish();
+    public void addDeviceWorking(DeviceWorking dw) {
+        aiSet.addWorking(dw);
+        replaceFragment(AddConditionFragment.newInstance(selectedRoom, aiSet));
+    }
+
+    @Override
+    public void addDataCondition(DataCondition data) {
+        aiSet.addDataCondition(data);
+        replaceFragment(AddConditionFragment.newInstance(selectedRoom, aiSet));
+    }
+
+    @Override
+    public void setDateCondition(DateCondition date) {
+        aiSet.setDateCondition(date);
+        replaceFragment(AddConditionFragment.newInstance(selectedRoom, aiSet));
+    }
+
+    @Override
+    public void addAI_Interaction(AISet set) {
+        this.aiSet = set;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+
+
+        startActivity(UserSettingAIActivity.getStartIntent(this, roomArrayList));
     }
 
     @Override
     public void onSelectDeviceInteraction(Device device) {
         replaceFragment(DeviceWorkingFragment.newInstance(device,""));
     }
+
+
 }

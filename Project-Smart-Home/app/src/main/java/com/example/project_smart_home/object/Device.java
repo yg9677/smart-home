@@ -1,22 +1,79 @@
 package com.example.project_smart_home.object;
 
+import com.example.project_smart_home.Task.CommunicateTask;
+
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
-public class Device extends Room implements Serializable{
+public class Device implements Serializable{
 
+    String room;
     String name;
     String deviceKind;
     String model;
     int state;
+    boolean onoff;
+    String mode;
 
-    public Device(String room, int size, String kind, String address, String user,String name, String deviceKind, String model, int state){
-        super(room, size, kind,address,user);
+    CommunicateTask communicateTask;
+
+    public Device(String name, String deviceKind, String model, int state, String room){
+        this.room = room;
         this.name = name;
         this.deviceKind =deviceKind;
         this.model = model;
         this.state = state;
+        setByState();
+    }
+
+    public void onoffDevice(){
+        switch (state){
+            case 1:                 // 상태가 on일 경우
+                setState(2);        // 상태를 off로 만든다.
+                break;
+            case 2:                 // 상태가 off일 경우
+                setState(1);        // 상태를 on으로 만든다.
+                break;
+        }
+    }
+
+    // 장치로 명령어를 보내는 메서드
+    public void commandDevice(String cmd){
+        communicateTask = new CommunicateTask();
+        communicateTask.execute(cmd);
+    }
+
+    // state에 따라 모드와 onoff 상태를 변경해주는 메서드
+    protected void setByState(){
+        switch (state){
+            case 1:
+                mode = "켜짐";
+                onoff = true;
+                break;
+            case 2:
+                mode = "꺼짐";
+                onoff = false;
+                break;
+                default:
+                    mode = "";
+                    onoff = true;
+                    break;
+        }
+    }
+
+    public boolean isOnoff() {
+        return onoff;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public String getRoom() {
+        return room;
     }
 
     public Device(){}
@@ -37,7 +94,15 @@ public class Device extends Room implements Serializable{
 
     public String getModel(){return this.model;}
 
-    public void setState(int state){this.state=state;}
+    public void setState(int state){this.state=state; setByState();}
 
     public int getState(){return this.state;}
+
+    public void copy(Device dv){
+        setName(dv.getName());
+        setDeviceKind(dv.getDeviceKind());
+        setModel(dv.getModel());
+        setRoom(dv.getRoom());
+        setState(dv.getState());
+    }
 }

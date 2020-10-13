@@ -12,6 +12,8 @@ public class Room implements Serializable {
 
     ArrayList<Device> devicelist = new ArrayList<Device>();
 
+    private MeasuredData measuredData = new MeasuredData(); // 측정 데이터
+
 
     public Room(String room, int size, String kind, String address, String user){
         this.room=room;
@@ -21,6 +23,21 @@ public class Room implements Serializable {
     }
     public Room(){}
 
+    public MeasuredData getMeasuredData(){ return  measuredData; }
+
+    public void setMeasuredData(MeasuredData measuredData) {
+        synchronized (this){
+            this.measuredData = measuredData;
+        }
+    }
+
+    public Device findDevice(String name){
+        for (int i = 0; i < devicelist.size(); i++){
+            if (devicelist.get(i).getName().equals(name))
+                return devicelist.get(i);
+        }
+        return null;
+    }
 
     public String getRoom() { return this.room; }
 

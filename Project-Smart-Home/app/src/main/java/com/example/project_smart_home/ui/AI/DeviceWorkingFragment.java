@@ -9,10 +9,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.project_smart_home.R;
 import com.example.project_smart_home.object.Device;
+import com.example.project_smart_home.object.DeviceWorking;
 
 public class DeviceWorkingFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -25,6 +29,13 @@ public class DeviceWorkingFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    DeviceWorking deviceWorking;
+
+    RadioGroup rgPower;
+    RadioButton rbtnOn, rbtnOff;
+
+    Button btnAddWorking;
 
     public DeviceWorkingFragment() {
         // Required empty public constructor
@@ -61,14 +72,44 @@ public class DeviceWorkingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_device_working, container, false);
+        deviceWorking = new DeviceWorking();
+        deviceWorking.setDevice(device);
+
+        rbtnOn = view.findViewById(R.id.dw_on_rbtn);
+        rbtnOff = view.findViewById(R.id.dw_off_rbtn);
+
+        rgPower = view.findViewById(R.id.dw_onoff_group);
+        rgPower.addView(rbtnOn);
+        rgPower.addView(rbtnOff);
+        rgPower.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                switch (checkedId){
+                    case R.id.dw_on_rbtn:
+                        deviceWorking.setOnoff(true);
+                        break;
+                    case R.id.dw_off_rbtn:
+                        deviceWorking.setOnoff(false);
+                        break;
+                }
+            }
+        });
+
+        btnAddWorking = view.findViewById(R.id.dw_register_btn);
+        btnAddWorking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onButtonPressed(deviceWorking);
+            }
+        });
 
         return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(DeviceWorking dw) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.addDeviceWorking(dw);
         }
     }
 
