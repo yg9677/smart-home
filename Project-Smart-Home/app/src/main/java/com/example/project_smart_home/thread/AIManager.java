@@ -1,9 +1,6 @@
 package com.example.project_smart_home.thread;
 
-import android.provider.ContactsContract;
-
 import com.example.project_smart_home.object.AISet;
-import com.example.project_smart_home.object.DataCondition;
 import com.example.project_smart_home.object.MeasuredData;
 
 import java.text.ParseException;

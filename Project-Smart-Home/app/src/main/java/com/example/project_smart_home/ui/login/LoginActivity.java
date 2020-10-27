@@ -29,13 +29,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        loginPresenter = new LoginPresenter(this);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        checkUserId();
+
+        loginPresenter = new LoginPresenter(this);
 
         etxtId = findViewById(R.id.input_email_login);
         etxtPw = findViewById(R.id.input_pass_login);
         Button btn_login = findViewById(R.id.login_btn);
         btn_login.setOnClickListener(this);
+    }
+
+    // 기존에 로그인한 아이디가 있는지 체크하여 있을 경우 MainActivity로 넘어간다.
+    private void checkUserId(){
+        if(mSharedPreferences.getString(USER_ID, "").equals(""))
+            startMainActivity();
     }
 
     @Override

@@ -25,6 +25,7 @@ public class Constants {
 
     // SharedPreferences 토큰
     public static final String USER_ID = "user_id";
+    public static final String TOKEN_AISET = "aiset";
 
     // 기능별 구분 텍스트
     public static final String FUNCTION_KEY_TEMP = "temp";
@@ -80,6 +81,6 @@ public class Constants {
     public static final String CONNECTED_MODE_SERVER = "server";           // 서버
 
     // 전송 종류
-    public static final String TYPE_OF_RECEIVE = "receive";                 // ReceiveController
+    public static final String TYPE_OF_RECEIVE = "receive";               // ReceiveController
     public static final String TYPE_OF_DEVICE = "device";                 // DeviceController
 }

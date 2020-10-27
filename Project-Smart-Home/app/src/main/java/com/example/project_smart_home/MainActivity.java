@@ -35,6 +35,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import com.example.project_smart_home.ui.setting.SettingsActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -47,16 +50,21 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import static com.example.project_smart_home.utils.Constants.CONNECTED_MODE_SERVER;
+import static com.example.project_smart_home.utils.Constants.TOKEN_AISET;
 import static com.example.project_smart_home.utils.Constants.TYPE_OF_DEVICE;
 import static com.example.project_smart_home.utils.Constants.TYPE_OF_RECEIVE;
+import static com.example.project_smart_home.utils.Constants.USER_ID;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         NavigationView.OnNavigationItemSelectedListener, OnClickItem, BluetoothConnector.OnBluetoothConnectorListener,
         OnThreadListener {
+    Gson gson;
+
     private Button nav_room_btn, nav_member_btn, nav_ai_btn, nav_key_btn;
     private ImageButton option_btn;
 
@@ -68,7 +76,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RecyclerView roomList;
     RoomRecyclerAdapter rListAdapter;
 
+    AIManager aiManager;                    // AI 조건을 1분마다 확인하는 Thread
+    Measurement measurement;                // 측정 데이터를 1분마다 받아오는 Thread
+
     public final static String myIp="192.168.219.106";
+    String userId;
+
     ArrayList<Room> room = new ArrayList<Room>();
     ArrayList<Device> deviceArrayList = new ArrayList<>();
     ArrayList<AISet> aiSets = new ArrayList<>();
@@ -81,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userId = mSharedPreferences.getString(USER_ID, "");         // 저장되어 있는 userId 불러오기
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -98,14 +112,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        Measurement measurement = new Measurement(room.size(), this);
-        measurement.start();
-
-        AIManager aiManager = new AIManager(aiSets, this);
-        aiManager.start();
-
         btnSetting();
         roomSetting();
+
+        measurement = new Measurement(room.size(), this);
+        measurement.start();
+
+        startAiManager();
+    }
+
+    // SharedPreferences에 저장되어 있는 AI 조건들을 가져와 AIManager를 통해 실행
+    private void startAiManager(){
+        gson = new GsonBuilder().create();
+        String straisetlist = mSharedPreferences.getString(TOKEN_AISET, "");
+        if (!straisetlist.equals("")){
+            Type type = new TypeToken<ArrayList<AISet>>(){}.getType();
+            aiSets = gson.fromJson(straisetlist, type);
+
+            aiManager = new AIManager(aiSets, this);
+            aiManager.start();
+        }
     }
 
     @Override
