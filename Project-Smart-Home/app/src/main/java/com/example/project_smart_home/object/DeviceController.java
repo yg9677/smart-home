@@ -18,6 +18,7 @@ import static com.example.project_smart_home.utils.Constants.MOODLIGHT;
 import static com.example.project_smart_home.utils.Constants.WINDOW;
 
 public class DeviceController {
+    Order result;
 
     public DeviceController(DeviceOrder order) {
         String cmd = order.getMessage();
@@ -37,22 +38,27 @@ public class DeviceController {
     // 장치 onoff 및 인공지능 명령
     public void onoffDevice(Device device){
         Device selectedDevice = device;
+        System.out.println("Kind :: " + selectedDevice.getDeviceKind());
         switch (selectedDevice.getDeviceKind()){                    // 장치 판별
             case AIRCLEANER:                                        // 공기청정기
                 AirCleaner airCleaner = (AirCleaner)selectedDevice;
                 airCleaner.onoffDevice();
+                result = new DeviceOrder("device", "return", airCleaner);
                 break;
             case DOORLOCK:                                          // 도어락
                 DoorLock doorLock = (DoorLock)selectedDevice;
                 doorLock.open();
+                result = new DeviceOrder("device", "return", doorLock);
                 break;
             case MOODLIGHT:                                         // 무드등
                 MoodLight moodLight = (MoodLight)selectedDevice;
                 moodLight.onoffDevice();
+                result = new DeviceOrder("device", "return", moodLight);
                 break;
             case WINDOW:                                            // 스마트창문
                 Window window = (Window)selectedDevice;
                 window.onoffDevice();
+                result = new DeviceOrder("device", "return", window);
                 break;
         }
     }
@@ -101,5 +107,9 @@ public class DeviceController {
                     break;
             }
         }
+    }
+
+    public Order getResult() {
+        return result;
     }
 }

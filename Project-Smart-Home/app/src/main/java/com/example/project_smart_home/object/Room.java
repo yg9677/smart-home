@@ -1,9 +1,12 @@
 package com.example.project_smart_home.object;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Room implements Serializable {
+public class Room implements Parcelable {
 
     private String room;
     private int size;
@@ -15,12 +18,13 @@ public class Room implements Serializable {
     private MeasuredData measuredData = new MeasuredData(); // 측정 데이터
 
 
-    public Room(String room, int size, String kind, String address, String user){
+    public Room(String room, int size, String kind, String address){
         this.room=room;
         this.size=size;
         this.kind=kind;
         this.address=address;
     }
+
     public Room(){}
 
     public MeasuredData getMeasuredData(){ return  measuredData; }
@@ -60,4 +64,41 @@ public class Room implements Serializable {
     }
 
     public void addDevice(Device device){ devicelist.add(device); }
+
+
+    public Room(Parcel in){
+        this.room = in.readString();
+        this.size = in.readInt();
+        this.kind = in.readString();
+        this.address = in.readString();
+        in.readTypedList(devicelist, Device.CREATOR);
+        this.measuredData = (MeasuredData) in.readSerializable();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(this.room);
+        parcel.writeInt(this.size);
+        parcel.writeString(this.kind);
+        parcel.writeString(this.address);
+        parcel.writeTypedList(this.devicelist);
+        parcel.writeSerializable(this.measuredData);
+    }
+
+    public static final Creator<Room> CREATOR = new Creator<Room>() {
+        @Override
+        public Room createFromParcel(Parcel in) {
+            return new Room(in);
+        }
+
+        @Override
+        public Room[] newArray(int size) {
+            return new Room[size];
+        }
+    };
 }

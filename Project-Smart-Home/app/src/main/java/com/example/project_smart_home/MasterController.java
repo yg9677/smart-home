@@ -27,7 +27,7 @@ public class MasterController {
                         break;
                     case TYPE_OF_DEVICE:
                         deviceController = new DeviceController((DeviceOrder)order);
-                        returnOrder = new Order();
+                        returnOrder = deviceController.getResult();
                         break;
                 }
                 break;

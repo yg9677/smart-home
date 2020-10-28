@@ -9,9 +9,13 @@ import com.example.project_smart_home.adapter.OnClickItem;
 import com.example.project_smart_home.adapter.RoomRecyclerAdapter;
 import com.example.project_smart_home.bluetooth.BluetoothConnector;
 import com.example.project_smart_home.object.AISet;
+import com.example.project_smart_home.object.AirCleaner;
 import com.example.project_smart_home.object.Device;
+import com.example.project_smart_home.object.DoorLock;
 import com.example.project_smart_home.object.MeasuredData;
+import com.example.project_smart_home.object.MoodLight;
 import com.example.project_smart_home.object.Room;
+import com.example.project_smart_home.object.Window;
 import com.example.project_smart_home.order.DeviceOrder;
 import com.example.project_smart_home.order.Order;
 import com.example.project_smart_home.order.RoomListOrder;
@@ -53,11 +57,16 @@ import android.widget.ImageButton;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import static com.example.project_smart_home.utils.Constants.AIRCLEANER;
+import static com.example.project_smart_home.utils.Constants.APP_TEST;
 import static com.example.project_smart_home.utils.Constants.CONNECTED_MODE_SERVER;
+import static com.example.project_smart_home.utils.Constants.DOORLOCK;
+import static com.example.project_smart_home.utils.Constants.MOODLIGHT;
 import static com.example.project_smart_home.utils.Constants.TOKEN_AISET;
 import static com.example.project_smart_home.utils.Constants.TYPE_OF_DEVICE;
 import static com.example.project_smart_home.utils.Constants.TYPE_OF_RECEIVE;
 import static com.example.project_smart_home.utils.Constants.USER_ID;
+import static com.example.project_smart_home.utils.Constants.WINDOW;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
@@ -115,10 +124,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnSetting();
         roomSetting();
 
-        measurement = new Measurement(room.size(), this);
-        measurement.start();
+        if(!APP_TEST){         // 앱 테스트 아닐 경우만
+            measurement = new Measurement(room.size(), this);
+            measurement.start();
 
-        startAiManager();
+            startAiManager();
+        }
     }
 
     // SharedPreferences에 저장되어 있는 AI 조건들을 가져와 AIManager를 통해 실행
@@ -243,7 +254,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         rListAdapter = new RoomRecyclerAdapter(this);
         roomList.setAdapter(rListAdapter);
 
-        setRoomList();
+        if(APP_TEST)    // 테스트 실행
+            setTestRoom();
+        else
+            setRoomList();
     }
 
     private void setRoomList(){
@@ -257,9 +271,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClickItem(Device deviceItem) {
+    public Device onClickItem(Device deviceItem) {
         Order deviceOrder = new DeviceOrder(TYPE_OF_DEVICE, "device_onoff", deviceItem);
-        masterController.communicate(deviceOrder);
+        DeviceOrder returnOrder = (DeviceOrder)masterController.communicate(deviceOrder);
+        return returnOrder.getDevice();
     }
 
     @Override
@@ -300,5 +315,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
         return result;
+    }
+
+    // 테스트 샘플 데이터
+    private void setTestRoom(){
+        Room room1 = new Room("방1", 4, "거실", "주소1");
+        Room room2 = new Room("방2", 4, "안방", "주소2");
+        Room room3 = new Room("방3", 4, "부엌", "주소3");
+
+        room1.addDevice(new MoodLight("무드등1", MOODLIGHT, "moodlight01", 2, room1.getRoom()));
+        room1.addDevice(new MoodLight("무드등2", MOODLIGHT, "moodlight02", 2, room1.getRoom()));
+        room1.addDevice(new Window("창문1", WINDOW, "window01", 2, room1.getRoom()));
+        room1.addDevice(new DoorLock("도어락", DOORLOCK, "doorlock01", 2, room1.getRoom()));
+
+        room2.addDevice(new MoodLight("무드등3", MOODLIGHT, "moodlight03", 2, room2.getRoom()));
+        room2.addDevice(new Window("창문2", WINDOW, "window02", 2, room2.getRoom()));
+        room2.addDevice(new AirCleaner("공기청정기", AIRCLEANER, "aircleaner01", 2, room2.getRoom()));
+
+        room3.addDevice(new MoodLight("무드등4", MOODLIGHT, "moodlight04", 2, room3.getRoom()));
+        room3.addDevice(new Window("창문3", WINDOW, "window03", 2, room3.getRoom()));
+
+        MeasuredData md = new MeasuredData();
+        md.setTimeHMS("");
+        md.setNumber(1);
+        md.setRegday("");
+        md.setTimeYMD("");
+        md.setRoom("방1");
+        md.setTemperature(12);
+        md.setHumidity(19);
+        md.setDust(29);
+
+        room1.setMeasuredData(md);
+        room2.setMeasuredData(md);
+        room3.setMeasuredData(md);
+
+        room.add(room1);
+        room.add(room2);
+        room.add(room3);
+
+        for(int i=0; i<room.size(); i++) { //방 저장
+            System.out.println("device 갯수 : " + room.get(i).getDevicelist().size());
+            rListAdapter.addRoom(room.get(i));
+        }
     }
 }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.project_smart_home.MainActivity;
 import com.example.project_smart_home.R;
 
+import static com.example.project_smart_home.utils.Constants.APP_TEST;
 import static com.example.project_smart_home.utils.Constants.USER_ID;
 
 // 로그인 액티비티
@@ -50,6 +51,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.login_btn:
+                if(APP_TEST){
+                    startMainActivity();
+                    break;
+                }
                 loginPresenter.login(etxtId.getText().toString(), etxtPw.getText().toString());
                 break;
         }

@@ -51,7 +51,7 @@ public class DeviceSelectFragment extends Fragment implements SelectDeviceListAd
     public static DeviceSelectFragment newInstance(Room param1, String param2) {
         DeviceSelectFragment fragment = new DeviceSelectFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, param1);
+        args.putParcelable(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -61,7 +61,7 @@ public class DeviceSelectFragment extends Fragment implements SelectDeviceListAd
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            room = (Room) getArguments().getSerializable(ARG_PARAM1);
+            room = (Room) getArguments().getParcelable(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
             deviceArrayList = room.getDevicelist();
         }

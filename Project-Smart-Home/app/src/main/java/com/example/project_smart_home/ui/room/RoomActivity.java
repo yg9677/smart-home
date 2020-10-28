@@ -15,6 +15,7 @@ import com.example.project_smart_home.R;
 import com.example.project_smart_home.object.MeasuredData;
 import com.example.project_smart_home.object.Room;
 
+import static com.example.project_smart_home.utils.Constants.APP_TEST;
 import static com.example.project_smart_home.utils.Constants.EXTRA_MESSAGE_ROOM;
 import static com.example.project_smart_home.utils.Constants.TEXT_MEASUREDDATA;
 
@@ -29,11 +30,10 @@ public class RoomActivity extends AppCompatActivity {
 
     int[] viewId = { R.id.temp_item, R.id.hum_item, R.id.dust_item, R.id.disc_item };   // layout id
 
-    MeasuredData sampleData;                        // 측정 데이터
+    MeasuredData mData;                        // 측정 데이터
 
-    // 샘플 데이터
-    private void setSampleData(){
-        sampleData = room.getMeasuredData();
+    private void setMeasuredData(){
+        mData = room.getMeasuredData();
     }
 
     @Override
@@ -41,8 +41,9 @@ public class RoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
 
-        setSampleData();
-        this.room = (Room) getIntent().getSerializableExtra(EXTRA_MESSAGE_ROOM);
+        this.room = (Room) getIntent().getParcelableExtra(EXTRA_MESSAGE_ROOM);
+
+        setMeasuredData();
 
         Toolbar toolbar = findViewById(R.id.room_name_toolbar);
         toolbar.setTitle(room.getRoom());
@@ -74,9 +75,9 @@ public class RoomActivity extends AppCompatActivity {
     }
 
     private void setDataValues(){
-        dataValues[0].setText(String.valueOf(sampleData.getTemperature()));
-        dataValues[1].setText(String.valueOf(sampleData.getHumidity()) + "%");
-        dataValues[2].setText(String.valueOf(sampleData.getDust()));
+        dataValues[0].setText(String.valueOf(mData.getTemperature()));
+        dataValues[1].setText(String.valueOf(mData.getHumidity()) + "%");
+        dataValues[2].setText(String.valueOf(mData.getDust()));
         dataValues[3].setText("모름");
         optimalDataValues[0].setText("26");
         optimalDataValues[1].setText("30%");

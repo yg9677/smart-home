@@ -1,6 +1,11 @@
 package com.example.project_smart_home.object;
 
-public class MeasuredData {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class MeasuredData implements Serializable {
     private int number;
     private String room;
     private String time_ymd;
@@ -63,5 +68,4 @@ public class MeasuredData {
     public void setDust(int dust) {
         this.dust=dust;
     }
-
 }

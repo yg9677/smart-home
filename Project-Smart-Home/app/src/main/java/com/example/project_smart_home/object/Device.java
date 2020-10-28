@@ -1,10 +1,13 @@
 package com.example.project_smart_home.object;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.example.project_smart_home.Task.CommunicateTask;
 
 import java.io.Serializable;
 
-public class Device implements Serializable{
+public class Device implements Parcelable {
 
     String room;
     String name;
@@ -105,4 +108,39 @@ public class Device implements Serializable{
         setRoom(dv.getRoom());
         setState(dv.getState());
     }
+
+    public Device(Parcel in){
+        this.room = in.readString();
+        this.name = in.readString();
+        this.deviceKind = in.readString();
+        this.model = in.readString();
+        this.state = in.readInt();
+        setByState();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(this.room);
+        parcel.writeString(this.name);
+        parcel.writeString(this.deviceKind);
+        parcel.writeString(this.model);
+        parcel.writeInt(this.state);
+    }
+
+    public static final Parcelable.Creator<Device> CREATOR = new Parcelable.Creator<Device>(){
+        @Override
+        public Device createFromParcel(Parcel in) {
+            return new Device(in);
+        }
+
+        @Override
+        public Device[] newArray(int i) {
+            return new Device[i];
+        }
+    };
 }

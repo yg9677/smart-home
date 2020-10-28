@@ -6,6 +6,9 @@ import java.util.List;
 // 상수, 문자열
 public class Constants {
 
+    // 서버 통신 사용할 경우 false로 바꿔서 사용, 서버 제외 테스트일 경우 true
+    public static final Boolean APP_TEST = true;
+
     // 액티비티 간 전송 메시지
     public static final String EXTRA_MESSAGE_ROOM_LIST = "room_arraylist";
     public static final String EXTRA_MESSAGE_ROOM = "room";

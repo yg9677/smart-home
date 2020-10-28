@@ -27,7 +27,7 @@ import com.example.project_smart_home.object.DateCondition;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DateConditionFragment extends Fragment implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
+public class DateConditionFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
 
     RadioButton rbtnAlways, rbtnInterval1, rbtnInterval2, rbtnInterval3, rbtnInterval4;
@@ -88,19 +88,25 @@ public class DateConditionFragment extends Fragment implements RadioGroup.OnChec
         dateCondition = new DateCondition();
         View view = inflater.inflate(R.layout.content_date_condition, container, false);
         rbtnAlways = view.findViewById(R.id.always_rbtn);
+        rbtnAlways.setOnClickListener(this);
         rbtnInterval1 = view.findViewById(R.id.interval1_rbtn);
+        rbtnInterval1.setOnClickListener(this);
         rbtnInterval2 = view.findViewById(R.id.interval2_rbtn);
+        rbtnInterval2.setOnClickListener(this);
         rbtnInterval3 = view.findViewById(R.id.interval3_rbtn);
+        rbtnInterval3.setOnClickListener(this);
         rbtnInterval4 = view.findViewById(R.id.interval4_rbtn);
+        rbtnInterval4.setOnClickListener(this);
 
-        RadioGroup itGroup = new RadioGroup(getContext().getApplicationContext());
-        itGroup.setOrientation(RadioGroup.VERTICAL);
-        itGroup.setOnCheckedChangeListener(this);
-        itGroup.addView(rbtnAlways);
-        itGroup.addView(rbtnInterval1);
-        itGroup.addView(rbtnInterval2);
-        itGroup.addView(rbtnInterval3);
-        itGroup.addView(rbtnInterval4);
+//        RadioGroup itGroup = new RadioGroup(getContext().getApplicationContext());
+//        itGroup.setOrientation(RadioGroup.VERTICAL);
+//        itGroup.addView(rbtnAlways);
+//        itGroup.addView(rbtnInterval1);
+//        itGroup.addView(rbtnInterval2);
+//        itGroup.addView(rbtnInterval3);
+//        itGroup.addView(rbtnInterval4);
+//
+//        itGroup.setOnCheckedChangeListener(this);
 
         spInterval = view.findViewById(R.id.interval_sp);
         setSpinner(1, 60);
@@ -155,25 +161,50 @@ public class DateConditionFragment extends Fragment implements RadioGroup.OnChec
         mListener = null;
     }
 
-    @Override
-    public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-        spInterval.setVisibility(View.GONE);
-        timePicker.setVisibility(View.GONE);
+    public void onCheckedChanged(int checkedId) {
 
         switch (checkedId){
             case R.id.always_rbtn:
+                spInterval.setVisibility(View.GONE);
+                timePicker.setVisibility(View.GONE);
+                rbtnInterval1.setChecked(false);
+                rbtnInterval2.setChecked(false);
+                rbtnInterval3.setChecked(false);
+                rbtnInterval4.setChecked(false);
                 dateCondition.setInterval(0);
                 break;
             case R.id.interval1_rbtn:
+                spInterval.setVisibility(View.GONE);
+                timePicker.setVisibility(View.GONE);
+                rbtnAlways.setChecked(false);
+                rbtnInterval2.setChecked(false);
+                rbtnInterval3.setChecked(false);
+                rbtnInterval4.setChecked(false);
                 dateCondition.setInterval(30);
                 break;
             case R.id.interval2_rbtn:
+                spInterval.setVisibility(View.GONE);
+                timePicker.setVisibility(View.GONE);
+                rbtnAlways.setChecked(false);
+                rbtnInterval1.setChecked(false);
+                rbtnInterval3.setChecked(false);
+                rbtnInterval4.setChecked(false);
                 dateCondition.setInterval(15);
                 break;
             case R.id.interval3_rbtn:
+                timePicker.setVisibility(View.GONE);
+                rbtnAlways.setChecked(false);
+                rbtnInterval1.setChecked(false);
+                rbtnInterval2.setChecked(false);
+                rbtnInterval4.setChecked(false);
                 spInterval.setVisibility(View.VISIBLE);
                 break;
             case R.id.interval4_rbtn:
+                spInterval.setVisibility(View.GONE);
+                rbtnAlways.setChecked(false);
+                rbtnInterval1.setChecked(false);
+                rbtnInterval2.setChecked(false);
+                rbtnInterval3.setChecked(false);
                 timePicker.setVisibility(View.VISIBLE);
                 break;
         }
@@ -194,6 +225,7 @@ public class DateConditionFragment extends Fragment implements RadioGroup.OnChec
         switch (view.getId()){
             case R.id.date_con_save_btn:
                 if (timePicker.getVisibility() == View.VISIBLE){
+
                     int hour, minute;
                     if (Build.VERSION.SDK_INT  < 23){
                         hour = timePicker.getCurrentHour();
@@ -203,13 +235,14 @@ public class DateConditionFragment extends Fragment implements RadioGroup.OnChec
                         minute = timePicker.getMinute();
                     }
                     String time = hour + ":" + minute;
+                    dateCondition.setInterval(-1);
                     dateCondition.setTime(time);
                 }
 
                 onButtonPressed(dateCondition);
                 break;
         }
-
+        onCheckedChanged(view.getId());
     }
 
     void setSpinner(int start, int end){
@@ -223,15 +256,4 @@ public class DateConditionFragment extends Fragment implements RadioGroup.OnChec
 
         spInterval.setAdapter(adapter);
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
 }

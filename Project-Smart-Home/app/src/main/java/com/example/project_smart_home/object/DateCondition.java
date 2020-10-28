@@ -1,11 +1,15 @@
 package com.example.project_smart_home.object;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateCondition extends Condition implements Serializable {
+public class DateCondition extends Condition implements Parcelable {
+
     int interval = -1;
     boolean[] days = {false, false, false, false, false, false, false};
     String time = "";
@@ -73,4 +77,34 @@ public class DateCondition extends Condition implements Serializable {
 
         return itvstr + tstr + daystr;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(interval);
+        parcel.writeBooleanArray(days);
+        parcel.writeString(time);
+    }
+
+    protected DateCondition(Parcel in) {
+        interval = in.readInt();
+        days = in.createBooleanArray();
+        time = in.readString();
+    }
+
+    public static final Creator<DateCondition> CREATOR = new Creator<DateCondition>() {
+        @Override
+        public DateCondition createFromParcel(Parcel in) {
+            return new DateCondition(in);
+        }
+
+        @Override
+        public DateCondition[] newArray(int size) {
+            return new DateCondition[size];
+        }
+    };
 }

@@ -1,8 +1,11 @@
 package com.example.project_smart_home.object;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
-public class DataCondition extends Condition implements Serializable {
+public class DataCondition extends Condition implements Parcelable {
     int[] ab = {1, 1, 1};    // 이상 이하 여부  1: 이상 2: 미만
     int[] data = {-1, -1, -1}; // 기준 수치
 
@@ -61,4 +64,32 @@ public class DataCondition extends Condition implements Serializable {
             return true;
         return false;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeIntArray(ab);
+        parcel.writeIntArray(data);
+    }
+
+    protected DataCondition(Parcel in) {
+        ab = in.createIntArray();
+        data = in.createIntArray();
+    }
+
+    public static final Creator<DataCondition> CREATOR = new Creator<DataCondition>() {
+        @Override
+        public DataCondition createFromParcel(Parcel in) {
+            return new DataCondition(in);
+        }
+
+        @Override
+        public DataCondition[] newArray(int size) {
+            return new DataCondition[size];
+        }
+    };
 }

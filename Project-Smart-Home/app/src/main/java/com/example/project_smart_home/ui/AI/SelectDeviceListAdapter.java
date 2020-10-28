@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_smart_home.R;
+import com.example.project_smart_home.object.Device;
 
 import java.util.ArrayList;
 

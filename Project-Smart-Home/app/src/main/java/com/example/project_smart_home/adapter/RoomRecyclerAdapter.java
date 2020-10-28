@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapter.ItemViewHolder> {
     ArrayList<Room> roomArrayList = new ArrayList<Room>();
-    ArrayList<Device> deviceArrayList = new ArrayList<>();
+    int deviceNum = 0;
 
     private OnClickItem clickEvent;
 
@@ -47,7 +47,6 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
     public void addRoom(Room room){
         roomArrayList.add(room);
     }
-    public void addDevice(Device device){deviceArrayList.add(device);}
 
     class ItemViewHolder extends RecyclerView.ViewHolder{
         private Context context;
@@ -56,7 +55,7 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
         private GridView deviceGrid;
         private LinearLayout emptyDevice;
 
-        int dh;             // 디바이스 아이템 높이 - device_item_height
+        int dh = 10;             // 디바이스 아이템 높이 - device_item_height
 
         public ItemViewHolder(@NonNull View itemView, OnClickItem onClick, Context context) {
             super(itemView);
@@ -64,7 +63,7 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
             this.clickEvent = onClick;
             this.context = context;
 
-            dh = (int)context.getResources().getDimension(R.dimen.device_item_height);
+            dh += (int)context.getResources().getDimension(R.dimen.device_item_height);
 
             btnRoom = itemView.findViewById(R.id.room_title_btn);
             deviceGrid = itemView.findViewById(R.id.device_grid);
@@ -83,10 +82,14 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
             if(room.getSize() == 0){
                 deviceGrid.setVisibility(View.GONE);
             }else {
+                ArrayList<Device> deviceArrayList = room.getDevicelist();
+                deviceNum = deviceArrayList.size();
+
                 emptyDevice.setVisibility(View.GONE);
-                deviceGrid.setLayoutParams(modifyHeight(deviceGrid, room));
+                deviceGrid.setLayoutParams(modifyHeight(deviceGrid));
                 DeviceGridViewAdapter dvGridAdapter = new DeviceGridViewAdapter(clickEvent, context, room.getRoom());
                 deviceGrid.setAdapter(dvGridAdapter);
+
                 System.out.println("devicelist size :: " + deviceArrayList.size());
                 for(int i = 0; i < deviceArrayList.size(); i++) {
                     if(deviceArrayList.get(i).getRoom().equals(room.getRoom())) { //디바이스와 해당 방의 이름이 똑같을 시
@@ -98,12 +101,12 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
 
         }
 
-        private ViewGroup.LayoutParams modifyHeight(View view, Room room){
+        private ViewGroup.LayoutParams modifyHeight(View view){
             ViewGroup.LayoutParams params = view.getLayoutParams();
             if (params == null){
                 params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             }
-            params.height += dh*(deviceArrayList.size()/2);
+            params.height += dh*(deviceNum/2 + deviceNum%2);
             return params;
         }
     }

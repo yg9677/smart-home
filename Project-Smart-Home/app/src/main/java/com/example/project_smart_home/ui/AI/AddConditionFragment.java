@@ -61,8 +61,8 @@ public class AddConditionFragment extends Fragment implements View.OnClickListen
     public static AddConditionFragment newInstance(Room param1, AISet param2) {
         AddConditionFragment fragment = new AddConditionFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, param1);
-        args.putSerializable(ARG_PARAM2, param2);
+        args.putParcelable(ARG_PARAM1, param1);
+        args.putParcelable(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,8 +71,8 @@ public class AddConditionFragment extends Fragment implements View.OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            room = (Room) getArguments().getSerializable(ARG_PARAM1);
-            aiSet = (AISet)getArguments().getSerializable(ARG_PARAM2);
+            room = (Room) getArguments().getParcelable(ARG_PARAM1);
+            aiSet = (AISet)getArguments().getParcelable(ARG_PARAM2);
         }
     }
 
@@ -81,8 +81,14 @@ public class AddConditionFragment extends Fragment implements View.OnClickListen
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.content_add_condition, container, false);
+
         txtEmptyCon = view.findViewById(R.id.empty_condition_txt);
         txtEmptyWorking = view.findViewById(R.id.empty_working_txt);
+
+        if (aiSet.getDataCondSize() > 0 && !aiSet.isNullDateCondition())
+            txtEmptyCon.setVisibility(View.GONE);
+        if (aiSet.getWorkingsSize() > 0)
+            txtEmptyWorking.setVisibility(View.GONE);
 
         btnDateCon = view.findViewById(R.id.date_con_btn);
         btnDateCon.setOnClickListener(this);
@@ -157,15 +163,4 @@ public class AddConditionFragment extends Fragment implements View.OnClickListen
             mListener.addAI_Interaction(aiSet);
         }
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
 }

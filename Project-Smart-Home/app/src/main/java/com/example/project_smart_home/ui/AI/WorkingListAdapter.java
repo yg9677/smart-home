@@ -16,6 +16,8 @@ import java.util.ArrayList;
 public class WorkingListAdapter extends RecyclerView.Adapter<WorkingListAdapter.ListViewHolder> {
     ArrayList<DeviceWorking> deviceWorkings = new ArrayList<>();
 
+    int h = 5;
+
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,6 +49,15 @@ public class WorkingListAdapter extends RecyclerView.Adapter<WorkingListAdapter.
 
         public void onBind(String str){
             txtWorking.setText(str);
+        }
+
+        private ViewGroup.LayoutParams modifyHeight(View view){
+            ViewGroup.LayoutParams params = view.getLayoutParams();
+            if (params == null){
+                params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            }
+            params.height += h*deviceWorkings.size();
+            return params;
         }
     }
 }

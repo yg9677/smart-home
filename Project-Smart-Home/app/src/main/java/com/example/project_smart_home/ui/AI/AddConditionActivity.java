@@ -130,6 +130,7 @@ public class AddConditionActivity extends AppCompatActivity implements OnFragmen
 
 
         startActivity(UserSettingAIActivity.getStartIntent(this, roomArrayList));
+        finish();
     }
 
     @Override

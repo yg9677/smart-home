@@ -97,7 +97,7 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
             dragHandler = itemView.findViewById(R.id.draghandler);
         }
 
-        void onBind(Room room){ txtRoomName.setText(room.getRoomname()); }
+        void onBind(Room room){ txtRoomName.setText(room.getRoom()); }
     }
 
 }

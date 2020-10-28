@@ -18,6 +18,8 @@ import java.util.ArrayList;
 public class ConditionListAdapter extends RecyclerView.Adapter<ConditionListAdapter.ListViewHolder> {
     ArrayList<Condition> conditions = new ArrayList<>();
 
+    int h;
+
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -57,6 +59,15 @@ public class ConditionListAdapter extends RecyclerView.Adapter<ConditionListAdap
 
         public void onBind(String str){
             txtCondition.setText(str);
+        }
+
+        private ViewGroup.LayoutParams modifyHeight(View view){
+            ViewGroup.LayoutParams params = view.getLayoutParams();
+            if (params == null){
+                params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            }
+            params.height += h*conditions.size();
+            return params;
         }
     }
 }

@@ -52,70 +52,34 @@ public class DeviceGridViewAdapter extends BaseAdapter {
             System.out.println("Device Size :: " + deviceArrayList.size());
             final Device deviceItem = deviceArrayList.get(position);
             view = inf.inflate(R.layout.device_item, null);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = DeviceControllerActivity.getStartIntent(inf.getContext(), deviceItem, roomname);
-                    inf.getContext().startActivity(intent);
-                }
-            });
+//            view.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent intent = DeviceControllerActivity.getStartIntent(inf.getContext(), deviceItem, roomname);
+//                    inf.getContext().startActivity(intent);
+//                }
+//            });
 
             TextView txtName = view.findViewById(R.id.device_name_txt);
             txtName.setText(deviceItem.getName());
             final TextView txtFunc = view.findViewById(R.id.device_value_txt);
             btnOnOff = view.findViewById(R.id.device_onoff_btn);
             btnOnOff.setSelected(true);
-            /*if(deviceItem.getName().equals("공기청정기")) {
-                if (deviceItem.getState() == 0) { //수동 모드 켜진 상태
-                    btnOnOff.setSelected(true);
-                } else if (deviceItem.getState() == 1) {//인공 지능 모드
-                    btnOnOff.setSelected(true);
-                } else if (deviceItem.getState() == 2) {//수동 모드 꺼진 상태
-                    btnOnOff.setSelected(false);
-                }
-            }else if(deviceItem.getDeviceKind().equals("무드등")){
-               if (deviceItem.getState() == 1) {//onLight
-                    btnOnOff.setSelected(true);
-                } else if (deviceItem.getState() == 2) {//offLight
-                    btnOnOff.setSelected(false);
-                }
-            }else if(deviceItem.getDeviceKind().equals("도어락")){
-                if (deviceItem.getState() == 1) {//작동중
-                    btnOnOff.setSelected(true);
-                }
-            }else if(deviceItem.getDeviceKind().equals("스마트창문")){
-                if (deviceItem.getState() == 2) {// AI 모드
-                    btnOnOff.setSelected(true);
-                } else {//수동 모드
-                    btnOnOff.setSelected(false);
-                }
-            }
-            else{
-                if (deviceItem.getState() == 0) {//인공 지능 모드
-
-                } else if (deviceItem.getState() == 1) {//수동 모드 꺼진 상태
-
-                }
-            }*/
-
 
             btnOnOff.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //버튼 on off
-                    clickEvent.onClickItem(deviceItem);
+                    Device result = clickEvent.onClickItem(deviceItem);
+                    deviceItem.copy(result);
                     txtFunc.setText(deviceItem.getMode());
                     btnOnOff.setSelected(deviceItem.isOnoff());
                 }
             });
 
-
             //디바이스 기능에 따라 버튼 추가
             try{
                 switch (deviceItem.getDeviceKind()){
-                    case "에어컨":
-                        txtFunc.setText("현재온도 25℃");
-                        break;
                     case "공기청정기":
                         if (deviceItem.getState()==0) {
                             txtFunc.setText("켜짐");
@@ -157,6 +121,10 @@ public class DeviceGridViewAdapter extends BaseAdapter {
 
         }
         return view;
+    }
+
+    public void updateDevice(Device device){
+
     }
 
     public void addItem(Device item) {

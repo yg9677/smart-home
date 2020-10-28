@@ -86,5 +86,6 @@ public class RoomListActivity extends AppCompatActivity implements RoomListRecyc
     public void onClickRoom(int position) {
         Intent intent = RoomActivity.getStartIntent(this, rooms.get(position));
         startActivity(intent);
+        finish();
     }
 }

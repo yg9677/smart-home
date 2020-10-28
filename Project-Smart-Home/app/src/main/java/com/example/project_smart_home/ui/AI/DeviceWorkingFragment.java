@@ -53,7 +53,7 @@ public class DeviceWorkingFragment extends Fragment {
     public static DeviceWorkingFragment newInstance(Device param1, String param2) {
         DeviceWorkingFragment fragment = new DeviceWorkingFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, param1);
+        args.putParcelable(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -63,7 +63,7 @@ public class DeviceWorkingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            device = (Device) getArguments().getSerializable(ARG_PARAM1);
+            device = (Device) getArguments().getParcelable(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -79,8 +79,6 @@ public class DeviceWorkingFragment extends Fragment {
         rbtnOff = view.findViewById(R.id.dw_off_rbtn);
 
         rgPower = view.findViewById(R.id.dw_onoff_group);
-        rgPower.addView(rbtnOn);
-        rgPower.addView(rbtnOff);
         rgPower.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
