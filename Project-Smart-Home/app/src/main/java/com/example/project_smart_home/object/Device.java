@@ -8,11 +8,11 @@ import com.example.project_smart_home.Task.CommunicateTask;
 import java.io.Serializable;
 
 public class Device implements Parcelable {
-
     String room;
     String name;
     String deviceKind;
     String model;
+    
     int state;
     boolean onoff;
     String mode;

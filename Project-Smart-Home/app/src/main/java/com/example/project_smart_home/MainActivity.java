@@ -26,7 +26,8 @@ import com.example.project_smart_home.ui.AI.AIActivity;
 import com.example.project_smart_home.ui.manual.ManualActivity;
 import com.example.project_smart_home.ui.member.MemberActivity;
 import com.example.project_smart_home.ui.message.MessageActivity;
-import com.example.project_smart_home.ui.room.RoomListActivity;
+import com.example.project_smart_home.ui.room.RoomActivity;
+import com.example.project_smart_home.ui.room.RoomListListenerListActivity;
 import com.example.project_smart_home.ui.Enrollment.KeyActivity;
 
 import android.preference.PreferenceManager;
@@ -56,6 +57,7 @@ import android.widget.ImageButton;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.example.project_smart_home.utils.Constants.AIRCLEANER;
 import static com.example.project_smart_home.utils.Constants.APP_TEST;
@@ -72,6 +74,8 @@ import static com.example.project_smart_home.utils.Constants.WINDOW;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         NavigationView.OnNavigationItemSelectedListener, OnClickItem, BluetoothConnector.OnBluetoothConnectorListener,
         OnThreadListener {
+    static Controller mController;
+
     Gson gson;
 
     private Button nav_room_btn, nav_member_btn, nav_ai_btn, nav_key_btn;
@@ -91,9 +95,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public final static String myIp="192.168.219.106";
     String userId;
 
-    ArrayList<Room> room = new ArrayList<Room>();
-    ArrayList<Device> deviceArrayList = new ArrayList<>();
-    ArrayList<AISet> aiSets = new ArrayList<>();
+    private ArrayList<Room> room = new ArrayList<Room>();
+    private ArrayList<Device> deviceArrayList = new ArrayList<>();
+    private ArrayList<AISet> aiSets = new ArrayList<>();
 
     MasterController masterController = new MasterController();
 
@@ -101,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mController = new Controller();
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         userId = mSharedPreferences.getString(USER_ID, "");         // 저장되어 있는 userId 불러오기
@@ -187,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent next = null;
         switch (view.getId()){
             case R.id.nav_room_btn: //방의 대한 센서 데이터들
-                next = RoomListActivity.getStartIntent(this, room);
+                next = RoomListListenerListActivity.getStartIntent(this, room);
                 break;
             case R.id.nav_member_btn:
                 next = MemberActivity.getStartIntent(this);
@@ -266,8 +272,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         room = resultOrder.getRoomArrayList();
         for(int i=0; i<room.size(); i++) { //방 저장
+            room.get(i).setSeqNum(i);
             rListAdapter.addRoom(room.get(i));
         }
+    }
+
+    private void updateRooms(int[] sort){
+        for(int i=0; i<room.size(); i++)
+            room.get(i).setSeqNum(sort[i]);
+        Collections.sort(room);
+        rListAdapter.update(sort);
     }
 
     @Override
@@ -275,6 +289,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Order deviceOrder = new DeviceOrder(TYPE_OF_DEVICE, "device_onoff", deviceItem);
         DeviceOrder returnOrder = (DeviceOrder)masterController.communicate(deviceOrder);
         return returnOrder.getDevice();
+    }
+
+    @Override
+    public void onClickRoom(Room room) {
+        startActivity(RoomActivity.getStartIntent(this, room));
     }
 
     @Override
@@ -356,6 +375,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for(int i=0; i<room.size(); i++) { //방 저장
             System.out.println("device 갯수 : " + room.get(i).getDevicelist().size());
             rListAdapter.addRoom(room.get(i));
+        }
+    }
+
+    public static Controller getMainController(){
+        return mController;
+    }
+
+    public class Controller {
+        public void updateRoomList(int[] sort){
+            updateRooms(sort);
         }
     }
 }

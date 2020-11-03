@@ -6,12 +6,20 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Room implements Parcelable {
-
+public class Room implements Parcelable, Comparable {
     private String room;
     private int size;
     private String kind;
     private String address;
+    int seqNum;                     // 방 순서
+
+    public int getSeqNum() {
+        return seqNum;
+    }
+
+    public void setSeqNum(int seqNum) {
+        this.seqNum = seqNum;
+    }
 
     ArrayList<Device> devicelist = new ArrayList<Device>();
 
@@ -71,6 +79,7 @@ public class Room implements Parcelable {
         this.size = in.readInt();
         this.kind = in.readString();
         this.address = in.readString();
+        this.seqNum = in.readInt();
         in.readTypedList(devicelist, Device.CREATOR);
         this.measuredData = (MeasuredData) in.readSerializable();
     }
@@ -86,6 +95,7 @@ public class Room implements Parcelable {
         parcel.writeInt(this.size);
         parcel.writeString(this.kind);
         parcel.writeString(this.address);
+        parcel.writeInt(this.seqNum);
         parcel.writeTypedList(this.devicelist);
         parcel.writeSerializable(this.measuredData);
     }
@@ -101,4 +111,10 @@ public class Room implements Parcelable {
             return new Room[size];
         }
     };
+
+    @Override
+    public int compareTo(Object o) {
+        Room r = (Room)o;
+        return this.seqNum - r.getSeqNum();
+    }
 }

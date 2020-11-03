@@ -82,6 +82,7 @@ public class KeyActivity extends AppCompatActivity implements Button.OnClickList
         Intent intent = new Intent(context, KeyActivity.class);
         return intent;
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == android.R.id.home) {

@@ -22,6 +22,7 @@ import com.example.project_smart_home.object.DateCondition;
 import com.example.project_smart_home.object.Device;
 import com.example.project_smart_home.object.DeviceWorking;
 import com.example.project_smart_home.object.Room;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.ArrayList;
 
@@ -36,17 +37,25 @@ public class AddConditionActivity extends AppCompatActivity implements OnFragmen
     AISet aiSet;
 
     Toolbar toolbar;
+    CollapsingToolbarLayout toolbarLayout;
+
+    boolean activityBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_condition);
 
+        activityBack = true;
+
         aiSet = new AISet();
         roomArrayList = (ArrayList<Room>) getIntent().getSerializableExtra(EXTRA_MESSAGE_ROOM_LIST);
 
         toolbar = findViewById(R.id.add_condition_toolbar);
+        toolbarLayout = findViewById(R.id.add_condition_toolbar_layout);
+
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("조건 추가");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -54,8 +63,10 @@ public class AddConditionActivity extends AppCompatActivity implements OnFragmen
     }
 
     public void replaceFragment(Fragment frag){
+        activityBack = false;
         FragmentManager fragManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragManager.beginTransaction();
+
         fragmentTransaction.replace(R.id.fragment_frame, frag).addToBackStack(null).commit();
     }
 
@@ -63,7 +74,10 @@ public class AddConditionActivity extends AppCompatActivity implements OnFragmen
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                finish();
+                if (activityBack)
+                    finish();
+                else
+                    super.onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -85,6 +99,7 @@ public class AddConditionActivity extends AppCompatActivity implements OnFragmen
         selectedRoom = room;
         aiSet.setRoomname(selectedRoom.getRoom());
         replaceFragment(AddConditionFragment.newInstance(room, aiSet));
+        activityBack = true;
     }
 
     @Override
@@ -99,26 +114,30 @@ public class AddConditionActivity extends AppCompatActivity implements OnFragmen
 
     @Override
     public void addWorkingInteraction(Room room) {
-        toolbar.setTitle("동작 추가");
+        toolbarLayout.setTitle("동작 추가");
         replaceFragment(DeviceSelectFragment.newInstance(room, ""));
     }
 
     @Override
     public void addDeviceWorking(DeviceWorking dw) {
+        toolbarLayout.setTitle("조건 추가");
         aiSet.addWorking(dw);
         replaceFragment(AddConditionFragment.newInstance(selectedRoom, aiSet));
+        activityBack = true;
     }
 
     @Override
     public void addDataCondition(DataCondition data) {
         aiSet.addDataCondition(data);
         replaceFragment(AddConditionFragment.newInstance(selectedRoom, aiSet));
+        activityBack = true;
     }
 
     @Override
     public void setDateCondition(DateCondition date) {
         aiSet.setDateCondition(date);
         replaceFragment(AddConditionFragment.newInstance(selectedRoom, aiSet));
+        activityBack = true;
     }
 
     @Override
@@ -126,8 +145,6 @@ public class AddConditionActivity extends AppCompatActivity implements OnFragmen
         this.aiSet = set;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
-
 
         startActivity(UserSettingAIActivity.getStartIntent(this, roomArrayList));
         finish();
@@ -137,6 +154,4 @@ public class AddConditionActivity extends AppCompatActivity implements OnFragmen
     public void onSelectDeviceInteraction(Device device) {
         replaceFragment(DeviceWorkingFragment.newInstance(device,""));
     }
-
-
 }

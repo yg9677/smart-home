@@ -21,8 +21,6 @@ public class DeviceGridViewAdapter extends BaseAdapter {
     ArrayList<Device> deviceArrayList = new ArrayList<Device>();
     String roomname;
     OnClickItem clickEvent;
-    ImageButton btnOnOff;
-    Button btnFunc;
 
     public DeviceGridViewAdapter(OnClickItem onClick, Context context, String roomname){
         clickEvent = onClick;
@@ -63,8 +61,10 @@ public class DeviceGridViewAdapter extends BaseAdapter {
             TextView txtName = view.findViewById(R.id.device_name_txt);
             txtName.setText(deviceItem.getName());
             final TextView txtFunc = view.findViewById(R.id.device_value_txt);
-            btnOnOff = view.findViewById(R.id.device_onoff_btn);
-            btnOnOff.setSelected(true);
+            final ImageButton btnOnOff = view.findViewById(R.id.device_onoff_btn);
+            System.out.println("전원 : " + deviceItem.isOnoff());
+            btnOnOff.setSelected(deviceItem.isOnoff());
+
 
             btnOnOff.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -73,6 +73,7 @@ public class DeviceGridViewAdapter extends BaseAdapter {
                     Device result = clickEvent.onClickItem(deviceItem);
                     deviceItem.copy(result);
                     txtFunc.setText(deviceItem.getMode());
+                    System.out.println("전원 : " + deviceItem.isOnoff());
                     btnOnOff.setSelected(deviceItem.isOnoff());
                 }
             });
@@ -92,6 +93,7 @@ public class DeviceGridViewAdapter extends BaseAdapter {
                         }
                         break;
                     case "도어락":
+                        txtFunc.setText("닫힘");
                         if(deviceItem.getState()==1){
                             txtFunc.setText("작동버튼");
                         }

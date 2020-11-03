@@ -11,7 +11,7 @@
         android:gravity="left|center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#00FFFFFF"/>
+        android:background="?android:selectableItemBackground"/>
     <LinearLayout
         android:id="@+id/empty_device"
         android:layout_width="match_parent"

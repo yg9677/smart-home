@@ -32,6 +32,7 @@ public class DateConditionFragment extends Fragment implements View.OnClickListe
 
     RadioButton rbtnAlways, rbtnInterval1, rbtnInterval2, rbtnInterval3, rbtnInterval4;
     Spinner spInterval;
+    TextView txtSpItv;
     TimePicker timePicker;
 
     TextView btnDays[] = new TextView[7];
@@ -109,6 +110,7 @@ public class DateConditionFragment extends Fragment implements View.OnClickListe
 //        itGroup.setOnCheckedChangeListener(this);
 
         spInterval = view.findViewById(R.id.interval_sp);
+        txtSpItv = view.findViewById(R.id.interval_sp_txt);
         setSpinner(1, 60);
         spInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -166,6 +168,7 @@ public class DateConditionFragment extends Fragment implements View.OnClickListe
         switch (checkedId){
             case R.id.always_rbtn:
                 spInterval.setVisibility(View.GONE);
+                txtSpItv.setVisibility(View.GONE);
                 timePicker.setVisibility(View.GONE);
                 rbtnInterval1.setChecked(false);
                 rbtnInterval2.setChecked(false);
@@ -175,6 +178,7 @@ public class DateConditionFragment extends Fragment implements View.OnClickListe
                 break;
             case R.id.interval1_rbtn:
                 spInterval.setVisibility(View.GONE);
+                txtSpItv.setVisibility(View.GONE);
                 timePicker.setVisibility(View.GONE);
                 rbtnAlways.setChecked(false);
                 rbtnInterval2.setChecked(false);
@@ -184,6 +188,7 @@ public class DateConditionFragment extends Fragment implements View.OnClickListe
                 break;
             case R.id.interval2_rbtn:
                 spInterval.setVisibility(View.GONE);
+                txtSpItv.setVisibility(View.GONE);
                 timePicker.setVisibility(View.GONE);
                 rbtnAlways.setChecked(false);
                 rbtnInterval1.setChecked(false);
@@ -198,9 +203,11 @@ public class DateConditionFragment extends Fragment implements View.OnClickListe
                 rbtnInterval2.setChecked(false);
                 rbtnInterval4.setChecked(false);
                 spInterval.setVisibility(View.VISIBLE);
+                txtSpItv.setVisibility(View.VISIBLE);
                 break;
             case R.id.interval4_rbtn:
                 spInterval.setVisibility(View.GONE);
+                txtSpItv.setVisibility(View.GONE);
                 rbtnAlways.setChecked(false);
                 rbtnInterval1.setChecked(false);
                 rbtnInterval2.setChecked(false);

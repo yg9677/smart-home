@@ -24,22 +24,33 @@
         <ImageButton
             android:id="@+id/option_btn"
             android:src="@drawable/ic_settings_black_18dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleType="fitXY"
             android:layout_weight="1"
             android:background="#00FFFFFF"/>
     </LinearLayout>
-    <Button
-        android:id="@+id/imageView"
-        android:drawableLeft="@mipmap/ic_launcher_round"
-        android:text="My Home"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left|center_vertical"
-        android:background="#00FFFFFF"
-        android:contentDescription="@string/nav_header_desc"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/nav_header_vertical_spacing" />
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:background="@color/transparent"
+            android:src="@drawable/ic_account_circle_24px"
+            android:layout_width="@dimen/profile_image_size"
+            android:layout_height="@dimen/profile_image_size"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+        <Button
+            android:id="@+id/imageView"
+            android:text="My Home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/nav_header_desc"
+            android:paddingTop="@dimen/nav_header_vertical_spacing" />
+    </LinearLayout>
+
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

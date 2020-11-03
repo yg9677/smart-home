@@ -85,7 +85,7 @@ public class AddConditionFragment extends Fragment implements View.OnClickListen
         txtEmptyCon = view.findViewById(R.id.empty_condition_txt);
         txtEmptyWorking = view.findViewById(R.id.empty_working_txt);
 
-        if (aiSet.getDataCondSize() > 0 && !aiSet.isNullDateCondition())
+        if (aiSet.getDataCondSize() > 0 || !aiSet.isNullDateCondition())
             txtEmptyCon.setVisibility(View.GONE);
         if (aiSet.getWorkingsSize() > 0)
             txtEmptyWorking.setVisibility(View.GONE);

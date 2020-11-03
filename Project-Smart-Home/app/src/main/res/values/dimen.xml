@@ -1,13 +1,14 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">25dp</dimen>
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="device_item_height">120dp</dimen>
     <dimen name="collapsingtoolbarlayout_height">200dp</dimen>
     <dimen name="activitiy_title_size">20dp</dimen>
+    <dimen name="profile_image_size">75dp</dimen>
 
     <dimen name="measured_data_width">180dp</dimen>
 

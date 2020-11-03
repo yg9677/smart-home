@@ -1,16 +1,10 @@
 package com.example.project_smart_home.ui.room;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,12 +12,9 @@ import androidx.core.view.MotionEventCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_smart_home.R;
-import com.example.project_smart_home.adapter.DeviceGridViewAdapter;
-import com.example.project_smart_home.adapter.OnClickItem;
 import com.example.project_smart_home.object.Room;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 // RoomListActivity의 RecyclerView 어뎁터
@@ -31,15 +22,15 @@ import java.util.Collections;
 public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecyclerAdapter.RoomViewHolder>
         implements RoomItemTouchHelperCallback.OnItemMoveListener{
     ArrayList<Room> roomArrayList = new ArrayList<Room>();         // 방 목록
-    private OnClickRoom clickEvent;                             // 방을 클릭했을 때 발생하는 이벤트(RoomListActivity에서 구현)
+    private OnRoomListListener listListener;                             // 방을 클릭했을 때 발생하는 이벤트(RoomListActivity에서 구현)
     private OnStartDragListener startDragListener;              // 드래그 기능
 
     public interface OnStartDragListener{
         void onStartDrag(RoomViewHolder holder);
-}
+    }
 
-    public RoomListRecyclerAdapter(OnClickRoom onClick, OnStartDragListener listener) {
-        this.clickEvent = onClick;
+    public RoomListRecyclerAdapter(OnRoomListListener listListener, OnStartDragListener listener) {
+        this.listListener = listListener;
         this.startDragListener = listener;
     }
 
@@ -47,7 +38,7 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
     @Override
     public RoomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.room_list_item, parent, false);
-        return new RoomViewHolder(view, clickEvent);
+        return new RoomViewHolder(view, listListener);
     }
 
     @Override
@@ -65,7 +56,7 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickEvent.onClickRoom(position);
+                listListener.onClickRoom(position);
             }
         });
     }
@@ -79,16 +70,17 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
     public boolean onItemMove(int fromPosition, int toPosition) {
         Collections.swap(roomArrayList, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
+        listListener.changeRoomItem(fromPosition, toPosition);
         return false;
     }
 
     class RoomViewHolder extends RecyclerView.ViewHolder{
-        private OnClickRoom clickEvent;
+        private OnRoomListListener clickEvent;
         private TextView txtRoomName;
         private ImageButton dragHandler;
         private View view;
 
-        public RoomViewHolder(@NonNull View itemView, OnClickRoom onClick) {
+        public RoomViewHolder(@NonNull View itemView, OnRoomListListener onClick) {
             super(itemView);
             this.clickEvent = onClick;
             this.view = itemView;
