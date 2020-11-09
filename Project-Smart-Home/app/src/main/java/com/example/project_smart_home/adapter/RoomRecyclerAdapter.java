@@ -105,10 +105,8 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
                 System.out.println("dh size : " + dh);
                 System.out.println("devicelist size :: " + deviceArrayList.size());
                 for(int i = 0; i < deviceArrayList.size(); i++) {
-                    if(deviceArrayList.get(i).getRoom().equals(room.getRoom())) { //디바이스와 해당 방의 이름이 똑같을 시
-                        dvGridAdapter.addItem(deviceArrayList.get(i));
-                        System.out.println("Device  num :: " + i);
-                    }
+                    dvGridAdapter.addItem(deviceArrayList.get(i));
+                    System.out.println("Device  num :: " + i);
                 }
             }
 

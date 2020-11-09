@@ -13,6 +13,34 @@ public class DataCondition extends Condition implements Parcelable {
         super.type = 2;
     }
 
+    public String getTemp_ab() {
+        String abStr = "이상";
+        if (ab[0] == 2) abStr = "미만";
+        return abStr;
+    }
+
+    public String getDust_ab() {
+        String abStr = "이상";
+        if (ab[1] == 2) abStr = "미만";
+        return abStr;
+    }
+
+    public String getHum_ab() {
+        String abStr = "이상";
+        if (ab[2] == 2) abStr = "미만";
+        return abStr;
+    }
+
+    public int getTemp() { return this.data[0]; }
+
+    public int getDust() {
+        return this.data[1];
+    }
+
+    public int getHum() {
+        return this.data[2];
+    }
+
     public void setTemp_ab(int temp_ab) { this.ab[0] = temp_ab; }
 
     public void setDust_ab(int dust_ab) {

@@ -2,6 +2,7 @@ package com.example.project_smart_home.refine;
 import com.example.project_smart_home.object.AirCleaner;
 import com.example.project_smart_home.object.Device;
 import com.example.project_smart_home.object.DoorLock;
+import com.example.project_smart_home.object.Humidifier;
 import com.example.project_smart_home.object.MoodLight;
 import com.example.project_smart_home.object.Window;
 
@@ -11,6 +12,7 @@ import java.util.StringTokenizer;
 
 import static com.example.project_smart_home.utils.Constants.AIRCLEANER;
 import static com.example.project_smart_home.utils.Constants.DOORLOCK;
+import static com.example.project_smart_home.utils.Constants.HUMIDIFIER;
 import static com.example.project_smart_home.utils.Constants.MOODLIGHT;
 import static com.example.project_smart_home.utils.Constants.WINDOW;
 
@@ -69,6 +71,9 @@ public class DeviceRifine {
                 break;
             case WINDOW:                                            // 스마트창문
                 castDevice = new Window();
+                break;
+            case HUMIDIFIER:
+                castDevice = new Humidifier();
                 break;
                 default:
                     castDevice = device;

@@ -56,13 +56,11 @@ public class DateCondition extends Condition implements Parcelable {
     @Override
     public String toString() {
         String itvstr = "";
-        if(interval == 0)
-            itvstr = "간격: 항상";
-        else if(interval > 0)
-            itvstr = "간격: " + interval + "분마다";
+       if(interval > 0)
+            itvstr = + interval + "분 후";
         String tstr = "";
         if(!time.equals(""))
-            tstr = time;
+            tstr = time + " ";
 
         String daystr = "";
         String[] dow = {"일", "월", "화", "수", "목", "금", "토"};
@@ -75,7 +73,7 @@ public class DateCondition extends Condition implements Parcelable {
             }
         }
 
-        return itvstr + tstr + daystr;
+        return tstr + daystr + " " + itvstr;
     }
 
     @Override

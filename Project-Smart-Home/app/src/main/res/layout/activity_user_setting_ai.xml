@@ -32,4 +32,25 @@
 
     <include layout="@layout/content_user_setting_ai"/>
 
+    <LinearLayout
+        android:id="@+id/aiset_delete_layout"
+        android:visibility="gone"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/aiset_delete_cancle_btn"
+            android:text="취소"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/aiset_delete_btn"
+            android:text="삭제"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

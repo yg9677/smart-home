@@ -22,7 +22,8 @@
                 android:textSize="20dp"
                 android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -31,7 +32,7 @@
                 android:background="@color/ripple"/>
             <RadioButton
                 android:id="@+id/interval1_rbtn"
-                android:text="30분 마다"
+                android:text="30분 후"
                 android:textSize="20dp"
                 android:padding="10dp"
                 android:layout_width="match_parent"
@@ -44,7 +45,7 @@
                 android:background="@color/ripple"/>
             <RadioButton
                 android:id="@+id/interval2_rbtn"
-                android:text="15분 마다"
+                android:text="15분 후"
                 android:textSize="20dp"
                 android:padding="10dp"
                 android:layout_width="match_parent"
@@ -74,7 +75,7 @@
                     android:layout_marginLeft="40dp"/>
                 <TextView
                     android:id="@+id/interval_sp_txt"
-                    android:text="마다"
+                    android:text="분 후"
                     android:textSize="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -87,7 +88,7 @@
                 android:background="@color/ripple"/>
             <RadioButton
                 android:id="@+id/interval4_rbtn"
-                android:text="특정 시간"
+                android:text="특정 시간만"
                 android:textSize="20dp"
                 android:padding="10dp"
                 android:layout_width="match_parent"

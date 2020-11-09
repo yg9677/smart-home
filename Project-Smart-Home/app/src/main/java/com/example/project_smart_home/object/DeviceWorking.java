@@ -15,8 +15,12 @@ public class DeviceWorking implements Parcelable {
         return device;
     }
 
-    public boolean isOnoff() {
-        return onoff;
+    public String getOnoff() {
+        String stronoff = "OFF";
+        if (onoff){
+            stronoff = "ON";
+        }
+        return stronoff;
     }
 
     public void setDevice(Device device) {

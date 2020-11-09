@@ -1,6 +1,5 @@
 package com.example.project_smart_home;
 
-import com.example.project_smart_home.object.DeviceController;
 import com.example.project_smart_home.order.DeviceOrder;
 import com.example.project_smart_home.order.Order;
 
@@ -8,10 +7,12 @@ import com.example.project_smart_home.order.Order;
 import static com.example.project_smart_home.utils.Constants.CONNECTED_MODE_SERVER;
 import static com.example.project_smart_home.utils.Constants.TYPE_OF_DEVICE;
 import static com.example.project_smart_home.utils.Constants.TYPE_OF_RECEIVE;
+import static com.example.project_smart_home.utils.Constants.TYPE_OF_SEND;
 
 public class MasterController {
     ReceiveController receiveController;
     DeviceController deviceController;
+    SendController sendController;
     public MasterController(){
 
     }
@@ -28,6 +29,10 @@ public class MasterController {
                     case TYPE_OF_DEVICE:
                         deviceController = new DeviceController((DeviceOrder)order);
                         returnOrder = deviceController.getResult();
+                        break;
+                    case TYPE_OF_SEND:
+                        sendController = new SendController(order);
+                        returnOrder = sendController.getResult();
                         break;
                 }
                 break;

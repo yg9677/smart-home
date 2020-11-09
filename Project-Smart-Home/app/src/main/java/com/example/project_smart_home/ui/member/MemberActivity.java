@@ -47,11 +47,10 @@ public class MemberActivity extends AppCompatActivity implements MemberListRecyc
 
     private void setMembers(){
         //샘플데이터
-        members.add(new Member("엄마"));
-        members.add(new Member("아빠"));
-        members.add(new Member("동생"));
-        members.add(new Member("나"));
 
+        members.add(new Member("엄마", "gim1234"));
+        members.add(new Member("아빠", "dad9876"));
+        members.add(new Member("동생", "bro1829"));
 
 
         for(int i = 0; i<members.size(); i++)

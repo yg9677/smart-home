@@ -57,7 +57,7 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
         }
 
         void onBind(final Member member){
-            txtName.setText(member.getName());
+            txtName.setText(member.getName() + "\t\t" + member.getId());
             btnFace.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

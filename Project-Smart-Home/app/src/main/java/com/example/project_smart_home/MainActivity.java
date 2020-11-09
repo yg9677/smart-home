@@ -16,6 +16,7 @@ import com.example.project_smart_home.object.MeasuredData;
 import com.example.project_smart_home.object.MoodLight;
 import com.example.project_smart_home.object.Room;
 import com.example.project_smart_home.object.Window;
+import com.example.project_smart_home.order.AISetListOrder;
 import com.example.project_smart_home.order.DeviceOrder;
 import com.example.project_smart_home.order.Order;
 import com.example.project_smart_home.order.RoomListOrder;
@@ -27,7 +28,7 @@ import com.example.project_smart_home.ui.manual.ManualActivity;
 import com.example.project_smart_home.ui.member.MemberActivity;
 import com.example.project_smart_home.ui.message.MessageActivity;
 import com.example.project_smart_home.ui.room.RoomActivity;
-import com.example.project_smart_home.ui.room.RoomListListenerListActivity;
+import com.example.project_smart_home.ui.room.RoomListActivity;
 import com.example.project_smart_home.ui.Enrollment.KeyActivity;
 
 import android.preference.PreferenceManager;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         NavigationView.OnNavigationItemSelectedListener, OnClickItem, BluetoothConnector.OnBluetoothConnectorListener,
         OnThreadListener {
     static Controller mController;
-
+    static MasterController masterController = new MasterController();
     Gson gson;
 
     private Button nav_room_btn, nav_member_btn, nav_ai_btn, nav_key_btn;
@@ -93,13 +94,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Measurement measurement;                // 측정 데이터를 1분마다 받아오는 Thread
 
     public final static String myIp="192.168.219.106";
+    public static String myCode="";
+    public static String doorModel="";
     String userId;
 
     private ArrayList<Room> room = new ArrayList<Room>();
-    private ArrayList<Device> deviceArrayList = new ArrayList<>();
     private ArrayList<AISet> aiSets = new ArrayList<>();
-
-    MasterController masterController = new MasterController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,26 +128,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mNavigationView.setNavigationItemSelectedListener(this);
 
         btnSetting();
-        roomSetting();
 
+        roomSetting();
         if(!APP_TEST){         // 앱 테스트 아닐 경우만
+            AISetListOrder od = (AISetListOrder) masterController.communicate(new Order(CONNECTED_MODE_SERVER, TYPE_OF_RECEIVE, "get_ailist"));
+            aiSets = od.getAISetList();
+
+            if (!aiSets.isEmpty()) {
+                gson = new GsonBuilder().create();
+                Type type = new TypeToken<ArrayList<AISet>>() {
+                }.getType();
+
+                String strList = gson.toJson(aiSets);
+
+                SharedPreferences.Editor editor = mSharedPreferences.edit();
+                editor.putString(TOKEN_AISET, strList);
+                editor.commit();
+            }
+
             measurement = new Measurement(room.size(), this);
             measurement.start();
-
-            startAiManager();
-        }
-    }
-
-    // SharedPreferences에 저장되어 있는 AI 조건들을 가져와 AIManager를 통해 실행
-    private void startAiManager(){
-        gson = new GsonBuilder().create();
-        String straisetlist = mSharedPreferences.getString(TOKEN_AISET, "");
-        if (!straisetlist.equals("")){
-            Type type = new TypeToken<ArrayList<AISet>>(){}.getType();
-            aiSets = gson.fromJson(straisetlist, type);
-
-            aiManager = new AIManager(aiSets, this);
-            aiManager.start();
         }
     }
 
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent next = null;
         switch (view.getId()){
             case R.id.nav_room_btn: //방의 대한 센서 데이터들
-                next = RoomListListenerListActivity.getStartIntent(this, room);
+                next = RoomListActivity.getStartIntent(this, room);
                 break;
             case R.id.nav_member_btn:
                 next = MemberActivity.getStartIntent(this);
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 next = SettingsActivity.getStartIntent(this);
                 break;
             case R.id.nav_key_btn:
-                next = KeyActivity.getStartIntent(this);
+                next = KeyActivity.getStartIntent(this, doorModel);
                 break;
         }
         if (next != null) startNextActivity(next);
@@ -215,12 +215,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Intent next = null;
         switch (menuItem.getItemId()){
-            case R.id.nav_message:
-                System.out.println(menuItem.getItemId());
-                System.out.println("message");
-                next = new Intent(this, MessageActivity.class);
-                startNextActivity(next);
-                break;
+//            case R.id.nav_message:
+//                System.out.println(menuItem.getItemId());
+//                System.out.println("message");
+//                next = new Intent(this, MessageActivity.class);
+//                startNextActivity(next);
+//                break;
             case R.id.nav_description:
                 next = new Intent(this, ManualActivity.class);
                 startNextActivity(next);
@@ -274,6 +274,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for(int i=0; i<room.size(); i++) { //방 저장
             room.get(i).setSeqNum(i);
             rListAdapter.addRoom(room.get(i));
+            for (Device dv : room.get(i).getDevicelist()){
+                if (dv.getName().equals("도어락")){
+                    doorModel = dv.getModel();
+                }
+            }
         }
     }
 
@@ -386,5 +391,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void updateRoomList(int[] sort){
             updateRooms(sort);
         }
+        public void request(Order order){ masterController.communicate(order); }
     }
 }

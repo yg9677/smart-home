@@ -99,16 +99,6 @@ public class DateConditionFragment extends Fragment implements View.OnClickListe
         rbtnInterval4 = view.findViewById(R.id.interval4_rbtn);
         rbtnInterval4.setOnClickListener(this);
 
-//        RadioGroup itGroup = new RadioGroup(getContext().getApplicationContext());
-//        itGroup.setOrientation(RadioGroup.VERTICAL);
-//        itGroup.addView(rbtnAlways);
-//        itGroup.addView(rbtnInterval1);
-//        itGroup.addView(rbtnInterval2);
-//        itGroup.addView(rbtnInterval3);
-//        itGroup.addView(rbtnInterval4);
-//
-//        itGroup.setOnCheckedChangeListener(this);
-
         spInterval = view.findViewById(R.id.interval_sp);
         txtSpItv = view.findViewById(R.id.interval_sp_txt);
         setSpinner(1, 60);
@@ -179,7 +169,6 @@ public class DateConditionFragment extends Fragment implements View.OnClickListe
             case R.id.interval1_rbtn:
                 spInterval.setVisibility(View.GONE);
                 txtSpItv.setVisibility(View.GONE);
-                timePicker.setVisibility(View.GONE);
                 rbtnAlways.setChecked(false);
                 rbtnInterval2.setChecked(false);
                 rbtnInterval3.setChecked(false);
@@ -189,7 +178,6 @@ public class DateConditionFragment extends Fragment implements View.OnClickListe
             case R.id.interval2_rbtn:
                 spInterval.setVisibility(View.GONE);
                 txtSpItv.setVisibility(View.GONE);
-                timePicker.setVisibility(View.GONE);
                 rbtnAlways.setChecked(false);
                 rbtnInterval1.setChecked(false);
                 rbtnInterval3.setChecked(false);
@@ -197,7 +185,6 @@ public class DateConditionFragment extends Fragment implements View.OnClickListe
                 dateCondition.setInterval(15);
                 break;
             case R.id.interval3_rbtn:
-                timePicker.setVisibility(View.GONE);
                 rbtnAlways.setChecked(false);
                 rbtnInterval1.setChecked(false);
                 rbtnInterval2.setChecked(false);

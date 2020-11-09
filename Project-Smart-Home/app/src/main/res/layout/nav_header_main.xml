@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="9"/>
         <ImageButton
+            android:visibility="gone"
             android:id="@+id/option_btn"
             android:src="@drawable/ic_settings_black_18dp"
             android:layout_width="25dp"

@@ -15,20 +15,34 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
+import com.example.project_smart_home.MainActivity;
 import com.example.project_smart_home.R;
+import com.example.project_smart_home.Task.AISetTask;
 import com.example.project_smart_home.object.AISet;
 import com.example.project_smart_home.object.DataCondition;
 import com.example.project_smart_home.object.DateCondition;
 import com.example.project_smart_home.object.Device;
 import com.example.project_smart_home.object.DeviceWorking;
 import com.example.project_smart_home.object.Room;
+import com.example.project_smart_home.order.AIsetOrder;
+import com.example.project_smart_home.refine.DateRefine;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import static com.example.project_smart_home.utils.Constants.AI_CONDITION_KEY_DATA;
 import static com.example.project_smart_home.utils.Constants.AI_CONDITION_KEY_DATE;
+import static com.example.project_smart_home.utils.Constants.APP_TEST;
+import static com.example.project_smart_home.utils.Constants.CONNECTED_MODE_SERVER;
 import static com.example.project_smart_home.utils.Constants.EXTRA_MESSAGE_ROOM_LIST;
+import static com.example.project_smart_home.utils.Constants.PATH_CODE_AISET;
+import static com.example.project_smart_home.utils.Constants.TOKEN_AISET;
+import static com.example.project_smart_home.utils.Constants.TYPE_OF_SEND;
 
 // 조건 추가 액티비티
 public class AddConditionActivity extends AppCompatActivity implements OnFragmentInteractionListener{
@@ -142,9 +156,40 @@ public class AddConditionActivity extends AppCompatActivity implements OnFragmen
 
     @Override
     public void addAI_Interaction(AISet set) {
-        this.aiSet = set;
+        AIsetOrder ao = new AIsetOrder(CONNECTED_MODE_SERVER, TYPE_OF_SEND, "send_aiset", aiSet);
+
+        if (!APP_TEST)
+            MainActivity.getMainController().request(ao);
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        ArrayList<AISet> aiSets = new ArrayList<>();
+        Type type = new TypeToken<ArrayList<AISet>>() {}.getType();
+
+        Gson gson = new GsonBuilder().create();
+        String straisetlist = sharedPreferences.getString(TOKEN_AISET, "");
+
+        if (!straisetlist.equals("")) {
+            aiSets = gson.fromJson(straisetlist, type);
+            int newId = 0;
+            for (AISet a : aiSets){
+                if (newId < a.getAiSetID())
+                    newId = a.getAiSetID();
+            }
+            aiSet.setAiSetID(newId + 1);
+        }
+        else {
+            aiSet.setAiSetID(1);
+        }
+
+        aiSets.add(aiSet);
+
+        straisetlist = gson.toJson(aiSets, type);
+        editor.putString(TOKEN_AISET, straisetlist);
+        editor.commit();
+
+        System.out.println("저장 : " + straisetlist);
 
         startActivity(UserSettingAIActivity.getStartIntent(this, roomArrayList));
         finish();

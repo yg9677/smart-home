@@ -160,6 +160,7 @@ public class AddConditionFragment extends Fragment implements View.OnClickListen
         }
         // 인공지능 추가
         if (view.getId() == btnAddAI.getId()){
+
             mListener.addAI_Interaction(aiSet);
         }
     }

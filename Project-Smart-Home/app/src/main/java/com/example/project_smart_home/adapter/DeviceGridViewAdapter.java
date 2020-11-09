@@ -2,12 +2,17 @@ package com.example.project_smart_home.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.project_smart_home.R;
@@ -57,7 +62,7 @@ public class DeviceGridViewAdapter extends BaseAdapter {
 //                    inf.getContext().startActivity(intent);
 //                }
 //            });
-
+            ImageView imgView = view.findViewById(R.id.device_img);
             TextView txtName = view.findViewById(R.id.device_name_txt);
             txtName.setText(deviceItem.getName());
             final TextView txtFunc = view.findViewById(R.id.device_value_txt);
@@ -77,7 +82,6 @@ public class DeviceGridViewAdapter extends BaseAdapter {
                     btnOnOff.setSelected(deviceItem.isOnoff());
                 }
             });
-
             //디바이스 기능에 따라 버튼 추가
             try{
                 switch (deviceItem.getDeviceKind()){
@@ -91,12 +95,14 @@ public class DeviceGridViewAdapter extends BaseAdapter {
                         else if (deviceItem.getState()==2) {
                             txtFunc.setText("꺼짐");
                         }
+                        imgView.setImageDrawable(view.getResources().getDrawable(R.drawable.iconfinder_aicleaner));
                         break;
                     case "도어락":
                         txtFunc.setText("닫힘");
                         if(deviceItem.getState()==1){
                             txtFunc.setText("작동버튼");
                         }
+                        imgView.setImageDrawable(view.getResources().getDrawable(R.drawable.iconfinder_code_door));
                         break;
                     case "스마트창문":
                         if (deviceItem.getState()==0) {
@@ -107,6 +113,10 @@ public class DeviceGridViewAdapter extends BaseAdapter {
                         }else if (deviceItem.getState()==2){
                             txtFunc.setText("스마트모드");
                         }
+                        imgView.setImageDrawable(view.getResources().getDrawable(R.drawable.iconfinder_window_3512836));
+                        break;
+                    case "무드등":
+                        imgView.setImageDrawable(view.getResources().getDrawable(R.drawable.iconfinder_light_lamp_3512841));
                         break;
                         default:
                             if (deviceItem.getState()==1) {
@@ -120,7 +130,6 @@ public class DeviceGridViewAdapter extends BaseAdapter {
                             break;
                 }
             }catch (NullPointerException e){ System.out.println("DeviceGridViewAdapter:: Device:func NULL"); }
-
         }
         return view;
     }

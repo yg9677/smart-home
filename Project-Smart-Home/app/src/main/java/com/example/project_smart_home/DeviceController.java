@@ -1,7 +1,13 @@
-package com.example.project_smart_home.object;
+package com.example.project_smart_home;
 
 import android.widget.Switch;
 
+import com.example.project_smart_home.object.AirCleaner;
+import com.example.project_smart_home.object.Device;
+import com.example.project_smart_home.object.DoorLock;
+import com.example.project_smart_home.object.Humidifier;
+import com.example.project_smart_home.object.MoodLight;
+import com.example.project_smart_home.object.Window;
 import com.example.project_smart_home.order.DeviceOrder;
 import com.example.project_smart_home.order.Order;
 
@@ -9,11 +15,14 @@ import static com.example.project_smart_home.utils.Constants.AIRCLEANER;
 import static com.example.project_smart_home.utils.Constants.CMD_ACL_OFF;
 import static com.example.project_smart_home.utils.Constants.CMD_ACL_ON;
 import static com.example.project_smart_home.utils.Constants.CMD_DL_OPEN;
+import static com.example.project_smart_home.utils.Constants.CMD_HMD_OFF;
+import static com.example.project_smart_home.utils.Constants.CMD_HMD_ON;
 import static com.example.project_smart_home.utils.Constants.CMD_ML_OFF;
 import static com.example.project_smart_home.utils.Constants.CMD_ML_ON;
 import static com.example.project_smart_home.utils.Constants.CMD_WINDOW_CLOSE;
 import static com.example.project_smart_home.utils.Constants.CMD_WINDOW_OPEN;
 import static com.example.project_smart_home.utils.Constants.DOORLOCK;
+import static com.example.project_smart_home.utils.Constants.HUMIDIFIER;
 import static com.example.project_smart_home.utils.Constants.MOODLIGHT;
 import static com.example.project_smart_home.utils.Constants.WINDOW;
 
@@ -60,6 +69,11 @@ public class DeviceController {
                 window.onoffDevice();
                 result = new DeviceOrder("device", "return", window);
                 break;
+            case HUMIDIFIER:                                        // 가습기
+                Humidifier humidifier = (Humidifier)selectedDevice;
+                humidifier.onoffDevice();
+                result = new DeviceOrder("device", "return", humidifier);
+                break;
         }
     }
 
@@ -84,6 +98,10 @@ public class DeviceController {
                     Window window = (Window)device;
                     window.commandDevice(CMD_WINDOW_OPEN);
                     break;
+                case HUMIDIFIER:                                        // 가습기
+                    Humidifier humidifier = (Humidifier)device;
+                    humidifier.commandDevice(CMD_HMD_ON);
+                    break;
             }
         }
     }
@@ -104,6 +122,10 @@ public class DeviceController {
                 case WINDOW:                                            // 스마트창문
                     Window window = (Window)device;
                     window.commandDevice(CMD_WINDOW_CLOSE);
+                    break;
+                case HUMIDIFIER:                                        // 가습기
+                    Humidifier humidifier = (Humidifier)device;
+                    humidifier.commandDevice(CMD_HMD_OFF);
                     break;
             }
         }

@@ -1,12 +1,15 @@
 package com.example.project_smart_home;
 
+import com.example.project_smart_home.Task.AILoadTask;
 import com.example.project_smart_home.Task.CommunicateTask;
 import com.example.project_smart_home.Task.DeviceTask;
 import com.example.project_smart_home.Task.RoomTask;
 import com.example.project_smart_home.object.Device;
 import com.example.project_smart_home.object.Room;
+import com.example.project_smart_home.order.AISetListOrder;
 import com.example.project_smart_home.order.Order;
 import com.example.project_smart_home.order.RoomListOrder;
+import com.example.project_smart_home.refine.AIRefine;
 import com.example.project_smart_home.refine.DeviceRifine;
 import com.example.project_smart_home.refine.RoomRifine;
 
@@ -26,6 +29,9 @@ public class ReceiveController {
             case "get_roomlist":
                 getRoomList(order);
                 break;
+            case "get_ailist":
+                getAIList(order);
+                break;
         }
     }
 
@@ -35,7 +41,7 @@ public class ReceiveController {
         String resultMsg = null;
         ArrayList<Room> roomList = null;
         try {
-            resultMsg = requestTask.execute("CC1").get(); //현재 방 저장
+            resultMsg = requestTask.execute(MainActivity.myCode,MainActivity.myCode).get(); //현재 방 저장
 
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -63,7 +69,7 @@ public class ReceiveController {
         DeviceRifine refine = new DeviceRifine();
         String resultMsg = null;
         try {
-            resultMsg = requestTask.execute("12345").get();
+            resultMsg = requestTask.execute(MainActivity.myCode,MainActivity.myCode).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -72,6 +78,21 @@ public class ReceiveController {
         System.out.println(resultMsg);
 
         return refine.getDeviceList(resultMsg);
+    }
+
+    public void getAIList(Order order){
+        AILoadTask aiLoadTask = new AILoadTask();
+        AIRefine refine = new AIRefine();
+        String resultMsg = "";
+
+        try {
+            resultMsg = aiLoadTask.execute(MainActivity.myCode).get();
+            result = new AISetListOrder("", "", "", refine.getAIList(resultMsg));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     public Order getResult(){

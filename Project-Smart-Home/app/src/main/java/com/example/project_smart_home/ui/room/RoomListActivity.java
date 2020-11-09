@@ -24,7 +24,7 @@ import java.util.Collections;
 import static com.example.project_smart_home.utils.Constants.EXTRA_MESSAGE_ROOM_LIST;
 
 // 방 목록 액티비티
-public class RoomListListenerListActivity extends AppCompatActivity implements RoomListRecyclerAdapter.OnStartDragListener, OnRoomListListener {
+public class RoomListActivity extends AppCompatActivity implements RoomListRecyclerAdapter.OnStartDragListener, OnRoomListListener {
     RoomListRecyclerAdapter adapter;        // 방 리스클러뷰 어뎁터
     ItemTouchHelper itemTouchHelper;        // 드래그 기능
 
@@ -83,7 +83,7 @@ public class RoomListListenerListActivity extends AppCompatActivity implements R
     }
 
     public static Intent getStartIntent(Context context, ArrayList<Room> roomList){
-        Intent intent = new Intent(context, RoomListListenerListActivity.class);
+        Intent intent = new Intent(context, RoomListActivity.class);
         intent.putExtra(EXTRA_MESSAGE_ROOM_LIST, roomList);
         return intent;
     }

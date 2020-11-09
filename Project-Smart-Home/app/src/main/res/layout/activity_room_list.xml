@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.room.RoomListListenerListActivity">
+    tools:context=".ui.room.RoomListActivity">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/room_list_toolbar"
         app:title="방 목록"

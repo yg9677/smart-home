@@ -17,20 +17,21 @@ import com.example.project_smart_home.R;
 import com.example.project_smart_home.Task.KeySetTask;
 import com.example.project_smart_home.Task.KeyTouchTask;
 
-import java.security.Key;
 import java.util.concurrent.ExecutionException;
 
 public class KeyActivity extends AppCompatActivity implements Button.OnClickListener { //implements 버튼 등록시 필요한 인터페이스
+    private String doorModel;
     private String fristCode, secondCode, thirdCode, fouthCode;
     private EditText edit1, edit2, edit3, edit4;
     private Button savebtn;
     private String keySend;
     KeySetTask setTask;
     KeyTouchTask touchTask;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
+
+        doorModel = getIntent().getStringExtra("");
 
         setContentView(R.layout.activity_keyset);
         Toolbar toolbar = findViewById(R.id.key_toolbar);
@@ -38,7 +39,7 @@ public class KeyActivity extends AppCompatActivity implements Button.OnClickList
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         touchTask=new KeyTouchTask();
         try {
-            touchTask.execute("door/insert").get();
+            touchTask.execute(MainActivity.myCode, doorModel,"insert").get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -58,7 +59,7 @@ public class KeyActivity extends AppCompatActivity implements Button.OnClickList
                 System.out.println(fristCode+" "+secondCode+" "+thirdCode+" "+fouthCode);
                 keySend=fristCode+" "+secondCode+" "+thirdCode+" "+fouthCode;
                 try {
-                    String result = setTask.execute(keySend).get();
+                    String result = setTask.execute(MainActivity.myCode, MainActivity.doorModel,keySend).get();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -78,11 +79,11 @@ public class KeyActivity extends AppCompatActivity implements Button.OnClickList
         savebtn.setOnClickListener(this);
 
     }
-    public static Intent getStartIntent(Context context){
+    public static Intent getStartIntent(Context context, String doormodel){
         Intent intent = new Intent(context, KeyActivity.class);
+        intent.putExtra("", doormodel);
         return intent;
     }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == android.R.id.home) {

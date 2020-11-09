@@ -5,10 +5,29 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class AISet implements Parcelable {
+    int aiSetID;
+
     String roomname;
     ArrayList<DeviceWorking> workings = new ArrayList<>();
     ArrayList<DataCondition> dataConditions = new ArrayList<>();
     DateCondition dateCondition;
+    int on = 1;
+
+    public int getAiSetID() {
+        return aiSetID;
+    }
+
+    public void setAiSetID(int aiSetID) {
+        this.aiSetID = aiSetID;
+    }
+
+    public int getOn() {
+        return on;
+    }
+
+    public void setOn(int on) {
+        this.on = on;
+    }
 
     public AISet() {}
 
@@ -67,6 +86,7 @@ public class AISet implements Parcelable {
         parcel.writeTypedList(workings);
         parcel.writeTypedList(dataConditions);
         parcel.writeParcelable(dateCondition, i);
+        parcel.writeInt(on);
     }
 
     protected AISet(Parcel in) {
@@ -74,6 +94,7 @@ public class AISet implements Parcelable {
         workings = in.createTypedArrayList(DeviceWorking.CREATOR);
         dataConditions = in.createTypedArrayList(DataCondition.CREATOR);
         dateCondition = in.readParcelable(DateCondition.class.getClassLoader());
+        on = in.readInt();
     }
 
     public static final Creator<AISet> CREATOR = new Creator<AISet>() {

@@ -13,11 +13,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class CommunicateTask extends AsyncTask<String, Void, String> {
+public class AISetTask extends AsyncTask<String, Void, String> {
     String sendMsg, receiveMsg;
-    String taskType = null;
     String path="";
-    String cmdType = "";
     @Override
     protected String doInBackground(String... strings) {
         try {
@@ -26,17 +24,13 @@ public class CommunicateTask extends AsyncTask<String, Void, String> {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             conn.setRequestMethod("POST");
-            System.out.println(url.getPath());
 
-            System.out.println(url.getPath());
             PrintWriter osw = new PrintWriter(conn.getOutputStream());
 
-            if(cmdType.equals("")){
-                sendMsg = "code="+strings[0]+"&"+taskType + "=" + strings[1];
-            }else{
-                sendMsg = "code="+strings[0]+"&"+taskType + "=" + strings[1]+"&"+cmdType+"="+strings[2];
-            }
-
+            sendMsg = "code="+strings[0]+"&model=" + strings[1]+"&temperature="+strings[2];
+            sendMsg+="&temperatureRule="+strings[3]+"&dust="+strings[4]+"&dustRule="+strings[5];
+            sendMsg+="&humidity="+strings[6]+"&humidityRule="+strings[7]+"&onoff="+strings[8];
+            sendMsg+="&interval="+strings[9]+"&day="+strings[10]+"&time="+strings[11]+"&room="+strings[12];
             osw.write(sendMsg);
             osw.flush();
             if(conn.getResponseCode() == conn.HTTP_OK) {
@@ -60,9 +54,5 @@ public class CommunicateTask extends AsyncTask<String, Void, String> {
         return receiveMsg;
     }
 
-    public void selectTask(String type){
-        taskType = type;
-    }
     public void selectPath(String path){ this.path = path; }
-    public void selectCmd(String cmd){ this.cmdType = cmd; }
 }

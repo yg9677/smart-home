@@ -75,13 +75,13 @@ public class AIManager extends Thread{
     }
 
     void workDevice(int s){
-        for (int i = 0; i < aiSets.get(s).getWorkingsSize(); i++){
-            if(aiSets.get(s).getDeviceWorking(i).isOnoff()){    // On 동작
-                mListener.onWork(aiSets.get(s).getDeviceWorking(i).getDevice().getName());
-            } else {                                            // Off 동작
-                mListener.offWork(aiSets.get(s).getDeviceWorking(i).getDevice().getName());
-            }
-        }
+//        for (int i = 0; i < aiSets.get(s).getWorkingsSize(); i++){
+//            if(aiSets.get(s).getDeviceWorking(i).isOnoff()){    // On 동작
+//                mListener.onWork(aiSets.get(s).getDeviceWorking(i).getDevice().getName());
+//            } else {                                            // Off 동작
+//                mListener.offWork(aiSets.get(s).getDeviceWorking(i).getDevice().getName());
+//            }
+//        }
     }
 
     boolean checkedInterval(int s, int m) {
