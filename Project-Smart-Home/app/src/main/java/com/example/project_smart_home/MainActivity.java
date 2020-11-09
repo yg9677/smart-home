@@ -26,7 +26,6 @@ import com.example.project_smart_home.thread.OnThreadListener;
 import com.example.project_smart_home.ui.AI.AIActivity;
 import com.example.project_smart_home.ui.manual.ManualActivity;
 import com.example.project_smart_home.ui.member.MemberActivity;
-import com.example.project_smart_home.ui.message.MessageActivity;
 import com.example.project_smart_home.ui.room.RoomActivity;
 import com.example.project_smart_home.ui.room.RoomListActivity;
 import com.example.project_smart_home.ui.Enrollment.KeyActivity;

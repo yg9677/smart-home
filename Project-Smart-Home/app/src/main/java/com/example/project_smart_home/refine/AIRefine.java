@@ -21,6 +21,7 @@ public class AIRefine {
         DataCondition dataCond = new DataCondition();
         DateCondition dateCond = new DateCondition();
         String temp;
+        int id = 1;
         while (token.hasMoreTokens()) {
             temp = token.nextToken(); //값 받아오기
             switch(i){
@@ -84,6 +85,8 @@ public class AIRefine {
                     aiLoad.setDateCondition(dateCond);
                     aiLoad.addDataCondition(dataCond);
                     aiLoad.addWorking(dvWorking);
+                    aiLoad.setAiSetID(id);
+                    id++;
                     i=1;
                     aiLoadList.add(aiLoad);
                     break;

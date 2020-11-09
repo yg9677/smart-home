@@ -5,7 +5,6 @@ import java.util.List;
 
 // 상수, 문자열
 public class Constants {
-
     // 서버 통신 사용할 경우 false로 바꿔서 사용, 서버 제외 테스트일 경우 true
     public static final Boolean APP_TEST = true;
 
@@ -64,7 +63,7 @@ public class Constants {
     public static final String SEND_ARDUINO_HUMIDIFIER = "";        // 가습기
 
     // 서버 통신 구별 값
-    public static final String SEND_SERVER_LOGIN = "login"; // 로그인
+    public static final String SEND_SERVER_LOGIN = "login";          // 로그인
 
     // 공기청정기 명령
     public static final String CMD_ACL_ON = "manual/3";             // 켜짐
